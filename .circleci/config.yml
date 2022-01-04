@@ -1,0 +1,30 @@
+# PHP CircleCI 2.0 configuration file
+# See: https://circleci.com/docs/2.0/language-php/
+version: 2
+
+jobs:
+  build:
+    docker:
+      # Specify the version you desire here
+      - image: cimg/php:8.0
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "composer.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      
+      - run: sudo composer self-update
+      - run: composer install -n --prefer-dist
+
+      - save_cache:
+          key: v1-dependencies-{{ checksum "composer.json" }}
+          paths:
+            - ./vendor
+    
+      - run: ./vendor/bin/phpstan analyse
+      - run: ./vendor/bin/phpunit
