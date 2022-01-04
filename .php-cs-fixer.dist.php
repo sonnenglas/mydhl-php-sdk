@@ -8,10 +8,10 @@ $finder = PhpCsFixer\Finder::create()
     ->append(['.php_cs.dist']);
 
 $rules = [
-    '@Symfony' => true,
+    '@PSR12' => true,
+    '@PHP80Migration' => true,
     'declare_strict_types' => true,
     'void_return' => true,
-    'native_function_invocation' => ['include' => ['@compiler_optimized'], 'scope' => 'namespaced'],
 ];
 
 $config = new PhpCsFixer\Config();

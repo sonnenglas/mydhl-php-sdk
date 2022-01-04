@@ -9,7 +9,7 @@ use Sonnenglas\MyDHLApi\ValueObjects\RateAddress;
 
 class RateAddressTest extends TestCase
 {
-    public function testValidRateAddress()
+    public function testValidRateAddress(): void
     {
         $countryCode = "DE";
         $postalCode = "10245";

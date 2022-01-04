@@ -17,7 +17,7 @@ jobs:
             - v1-dependencies-{{ checksum "composer.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
-      
+
       - run: sudo composer self-update
       - run: composer install -n --prefer-dist
 
@@ -25,6 +25,7 @@ jobs:
           key: v1-dependencies-{{ checksum "composer.json" }}
           paths:
             - ./vendor
-    
-      - run: ./vendor/bin/phpstan analyse
-      - run: ./vendor/bin/phpunit
+
+      - run: composer lint
+      - run: composer phpstan
+      - run: composer phpunit
