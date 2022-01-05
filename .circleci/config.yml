@@ -28,4 +28,4 @@ jobs:
 
       - run: composer lint
       - run: composer phpstan
-      - run: composer phpunit
+      - run: composer test
