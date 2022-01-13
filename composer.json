@@ -1,6 +1,6 @@
 {
-  "name": "sonnenglas/mydhl-api",
-  "description": "PHP wrapper for MyDHL API (DHL Express)",
+  "name": "sonnenglas/mydhl-php-sdk",
+  "description": "Unofficial PHP SDK for MyDHL REST API (DHL Express)",
   "keywords": ["mydhl", "dhl", "dhl-express", "api", "client", "php"],
   "type": "library",
   "license": "MIT",
@@ -18,7 +18,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Sonnenglas\\MyDHLApi\\": "src/"
+      "Sonnenglas\\MyDHL\\": "src/"
     }
   },
   "autoload-dev": {

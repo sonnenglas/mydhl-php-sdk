@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Sonnenglas\MyDHLApi\Exceptions\InvalidAddressException;
-use Sonnenglas\MyDHLApi\ValueObjects\RateAddress;
+use Sonnenglas\MyDHL\Exceptions\InvalidAddressException;
+use Sonnenglas\MyDHL\ValueObjects\RateAddress;
 
 class RateAddressTest extends TestCase
 {

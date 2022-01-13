@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Sonnenglas\MyDHLApi\ValueObjects;
+namespace Sonnenglas\MyDHL\ValueObjects;
 
-use Sonnenglas\MyDHLApi\Exceptions\InvalidAddressException;
+use Sonnenglas\MyDHL\Exceptions\InvalidAddressException;
 
 class RateAddress
 {

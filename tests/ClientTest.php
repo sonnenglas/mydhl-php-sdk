@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Sonnenglas\MyDHLApi\Client;
+use Sonnenglas\MyDHL\Client;
 
 class ClientTest extends TestCase
 {

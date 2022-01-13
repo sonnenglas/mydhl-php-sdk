@@ -2,26 +2,26 @@
 
 declare(strict_types=1);
 
-namespace Sonnenglas\MyDHLApi;
+namespace Sonnenglas\MyDHL;
 
 class Client
 {
-    protected const URL_TEST = 'https://express.api.dhl.com/mydhlapi/test';
+    protected const URI_TEST = 'https://express.api.dhl.com/mydhlapi/test';
 
-    protected const URL_PRODUCTION = 'https://express.api.dhl.com/mydhlapi';
+    protected const URI_PRODUCTION = 'https://express.api.dhl.com/mydhlapi';
 
-    protected string $baseUrl;
+    protected string $baseUri;
 
     public function __construct(
         protected string $username,
         protected string $password,
         protected bool $testMode = false
     ) {
-        $this->baseUrl = $this->testMode ? self::URL_TEST : self::URL_PRODUCTION;
+        $this->baseUri = $this->testMode ? self::URI_TEST : self::URI_PRODUCTION;
     }
 
-    public function getBaseUrl(): string
+    public function getBaseUri(): string
     {
-        return $this->baseUrl;
+        return $this->baseUri;
     }
 }

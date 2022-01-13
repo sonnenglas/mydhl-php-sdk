@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sonnenglas\MyDHLApi\Exceptions;
+namespace Sonnenglas\MyDHL\Exceptions;
 
 class InvalidAddressException extends \Exception
 {
