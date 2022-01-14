@@ -6,6 +6,7 @@ namespace Sonnenglas\MyDHL;
 
 use GuzzleHttp\Client as GuzzleClient;
 use Psr\Http\Message\ResponseInterface;
+use Ramsey\Uuid\Uuid;
 
 class Client
 {
@@ -40,36 +41,20 @@ class Client
     /**
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function get(string $uri, array $query): ResponseInterface
+    public function get(string $uri, array $query): array
     {
-        $httpClient = new GuzzleClient($this->getHttpClientConfig());
+        $httpClient = new GuzzleClient();
 
-        return $httpClient->request('GET', $uri, $this->getRequestOptions($query));
-    }
+        $options = $this->getRequestOptions($query);
 
+        $response = $httpClient->request('GET', $uri, $options);
 
-    protected function getHttpClientConfig(): array
-    {
-        return [
-            'base_uri' => $this->baseUri,
-            'headers' => [
-                'Authorization' => $this->getAuthorizationHeader(),
-                'Content-Type' => 'application/json',
-
-            ],
-        ];
-    }
-
-    protected function getAuthorizationHeader(): string
-    {
-        $token = base64_encode("{$this->username}:{$this->password}");
-
-        return "Basic $token";
+        return json_decode((string) $response->getBody(), true);
     }
 
     protected function generateMessageReference(): string
     {
-        $this->lastMessageReference = uniqid();
+        $this->lastMessageReference = Uuid::uuid6()->toString();
 
         return $this->lastMessageReference;
     }
@@ -78,8 +63,12 @@ class Client
     {
         return [
             'query' => $query,
+            'base_uri' => $this->baseUri,
+            'auth' => [$this->username, $this->password],
             'headers' => [
+                'Content-Type' => 'application/json',
                 'Message-Reference' => $this->generateMessageReference(),
+
             ],
         ];
     }

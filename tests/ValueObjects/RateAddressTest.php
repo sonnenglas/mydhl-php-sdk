@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests;
+namespace Tests\ValueObjects;
 
 use Sonnenglas\MyDHL\Exceptions\InvalidAddressException;
 use Sonnenglas\MyDHL\ValueObjects\RateAddress;
+use Tests\TestCase;
 
 class RateAddressTest extends TestCase
 {

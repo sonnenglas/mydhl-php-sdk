@@ -7,7 +7,7 @@ namespace Sonnenglas\MyDHL\Services;
 use DateTimeImmutable;
 use Sonnenglas\MyDHL\Client;
 use Sonnenglas\MyDHL\Exceptions\MissingParameterException;
-use Sonnenglas\MyDHL\Responses\RateResponse;
+use Sonnenglas\MyDHL\ResponseParsers\RateResponseParser;
 use Sonnenglas\MyDHL\ValueObjects\Package;
 use Sonnenglas\MyDHL\ValueObjects\RateAddress;
 
@@ -46,7 +46,7 @@ class RateService
         $this->validateParams();
         $query = $this->prepareQuery();
         $response = $this->client->get(self::RETRIEVE_RATES_ONE_PIECE_URL, $query);
-        return (new RateResponse($response))->getResponse();
+        return (new RateResponseParser($response))->parse();
     }
 
     public function setAccountNumber(string $accountNumber): RateService

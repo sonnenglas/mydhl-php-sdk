@@ -1,0 +1,523 @@
+{
+  "products": [
+    {
+      "productName": "MEDICAL EXPRESS DOMESTIC",
+      "productCode": "C",
+      "localProductCode": "B",
+      "localProductCountryCode": "DE",
+      "networkTypeCode": "TD",
+      "isCustomerAgreement": true,
+      "weight": {
+        "volumetric": 3.6,
+        "provided": 4,
+        "unitOfMeasurement": "metric"
+      },
+      "totalPrice": [
+        {
+          "currencyType": "BILLC",
+          "priceCurrency": "EUR",
+          "price": 53.25
+        },
+        {
+          "currencyType": "PULCL",
+          "price": 0
+        },
+        {
+          "currencyType": "BASEC",
+          "price": 0
+        }
+      ],
+      "totalPriceBreakdown": [
+        {
+          "currencyType": "BILLC",
+          "priceCurrency": "EUR",
+          "priceBreakdown": [
+            {
+              "typeCode": "STTXA",
+              "price": 8.5
+            },
+            {
+              "typeCode": "SPRQT",
+              "price": 49.42
+            }
+          ]
+        }
+      ],
+      "detailedPriceBreakdown": [
+        {
+          "currencyType": "BILLC",
+          "priceCurrency": "EUR",
+          "breakdown": [
+            {
+              "name": "MEDICAL EXPRESS DOMESTIC",
+              "price": 49.42,
+              "priceBreakdown": [
+                {
+                  "priceType": "TAX",
+                  "typeCode": "DEFAUL",
+                  "price": 7.89,
+                  "rate": 19,
+                  "basePrice": 41.53
+                }
+              ]
+            },
+            {
+              "name": "FUEL SURCHARGE",
+              "serviceCode": "FF",
+              "localServiceCode": "FF",
+              "serviceTypeCode": "SCH",
+              "price": 3.83,
+              "isCustomerAgreement": false,
+              "isMarketedService": false,
+              "priceBreakdown": [
+                {
+                  "priceType": "TAX",
+                  "typeCode": "DEFAUL",
+                  "price": 0.61,
+                  "rate": 19,
+                  "basePrice": 3.22
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "pickupCapabilities": {
+        "nextBusinessDay": false,
+        "localCutoffDateAndTime": "2021-01-18T17:00:00",
+        "GMTCutoffTime": "18:30:00",
+        "pickupEarliest": "10:00:00",
+        "pickupLatest": "18:30:00",
+        "originServiceAreaCode": "BER",
+        "originFacilityAreaCode": "BE3",
+        "pickupAdditionalDays": 0,
+        "pickupDayOfWeek": 1
+      },
+      "deliveryCapabilities": {
+        "deliveryTypeCode": "QDDF",
+        "estimatedDeliveryDateAndTime": "2021-01-19T09:00:00",
+        "destinationServiceAreaCode": "HAM",
+        "destinationFacilityAreaCode": "HH4",
+        "deliveryAdditionalDays": 0,
+        "deliveryDayOfWeek": 2,
+        "totalTransitDays": 1
+      },
+      "pricingDate": "2022-01-14"
+    },
+    {
+      "productName": "EXPRESS DOMESTIC 9:00",
+      "productCode": "I",
+      "localProductCode": "H",
+      "localProductCountryCode": "DE",
+      "networkTypeCode": "TD",
+      "isCustomerAgreement": false,
+      "weight": {
+        "volumetric": 3.6,
+        "provided": 4,
+        "unitOfMeasurement": "metric"
+      },
+      "totalPrice": [
+        {
+          "currencyType": "BILLC",
+          "priceCurrency": "EUR",
+          "price": 38.69
+        },
+        {
+          "currencyType": "PULCL",
+          "price": 0
+        },
+        {
+          "currencyType": "BASEC",
+          "price": 0
+        }
+      ],
+      "totalPriceBreakdown": [
+        {
+          "currencyType": "BILLC",
+          "priceCurrency": "EUR",
+          "priceBreakdown": [
+            {
+              "typeCode": "STTXA",
+              "price": 6.18
+            },
+            {
+              "typeCode": "SPRQT",
+              "price": 11.7
+            }
+          ]
+        }
+      ],
+      "detailedPriceBreakdown": [
+        {
+          "currencyType": "BILLC",
+          "priceCurrency": "EUR",
+          "breakdown": [
+            {
+              "name": "EXPRESS DOMESTIC 9:00",
+              "price": 11.7,
+              "priceBreakdown": [
+                {
+                  "priceType": "TAX",
+                  "typeCode": "DEFAUL",
+                  "price": 1.87,
+                  "rate": 19,
+                  "basePrice": 9.83
+                }
+              ]
+            },
+            {
+              "name": "9:00 PREMIUM",
+              "serviceCode": "YI",
+              "localServiceCode": "YI",
+              "serviceTypeCode": "SCH",
+              "price": 23.8,
+              "isCustomerAgreement": false,
+              "isMarketedService": true,
+              "priceBreakdown": [
+                {
+                  "priceType": "TAX",
+                  "typeCode": "DEFAUL",
+                  "price": 3.8,
+                  "rate": 19,
+                  "basePrice": 20
+                }
+              ]
+            },
+            {
+              "name": "FUEL SURCHARGE",
+              "serviceCode": "FF",
+              "localServiceCode": "FF",
+              "serviceTypeCode": "SCH",
+              "price": 3.19,
+              "isCustomerAgreement": false,
+              "isMarketedService": false,
+              "priceBreakdown": [
+                {
+                  "priceType": "TAX",
+                  "typeCode": "DEFAUL",
+                  "price": 0.51,
+                  "rate": 19,
+                  "basePrice": 2.68
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "pickupCapabilities": {
+        "nextBusinessDay": false,
+        "localCutoffDateAndTime": "2021-01-18T17:00:00",
+        "GMTCutoffTime": "18:30:00",
+        "pickupEarliest": "10:00:00",
+        "pickupLatest": "18:30:00",
+        "originServiceAreaCode": "BER",
+        "originFacilityAreaCode": "BE3",
+        "pickupAdditionalDays": 0,
+        "pickupDayOfWeek": 1
+      },
+      "deliveryCapabilities": {
+        "deliveryTypeCode": "QDDF",
+        "estimatedDeliveryDateAndTime": "2021-01-19T09:00:00",
+        "destinationServiceAreaCode": "HAM",
+        "destinationFacilityAreaCode": "HH4",
+        "deliveryAdditionalDays": 0,
+        "deliveryDayOfWeek": 2,
+        "totalTransitDays": 1
+      },
+      "pricingDate": "2022-01-14"
+    },
+    {
+      "productName": "EXPRESS DOMESTIC 10:00",
+      "productCode": "O",
+      "localProductCode": "O",
+      "localProductCountryCode": "DE",
+      "networkTypeCode": "TD",
+      "isCustomerAgreement": false,
+      "weight": {
+        "volumetric": 3.6,
+        "provided": 4,
+        "unitOfMeasurement": "metric"
+      },
+      "totalPrice": [
+        {
+          "currencyType": "BILLC",
+          "priceCurrency": "EUR",
+          "price": 25.72
+        },
+        {
+          "currencyType": "PULCL",
+          "price": 0
+        },
+        {
+          "currencyType": "BASEC",
+          "price": 0
+        }
+      ],
+      "totalPriceBreakdown": [
+        {
+          "currencyType": "BILLC",
+          "priceCurrency": "EUR",
+          "priceBreakdown": [
+            {
+              "typeCode": "STTXA",
+              "price": 4.11
+            },
+            {
+              "typeCode": "SPRQT",
+              "price": 11.7
+            }
+          ]
+        }
+      ],
+      "detailedPriceBreakdown": [
+        {
+          "currencyType": "BILLC",
+          "priceCurrency": "EUR",
+          "breakdown": [
+            {
+              "name": "EXPRESS DOMESTIC 10:00",
+              "price": 11.7,
+              "priceBreakdown": [
+                {
+                  "priceType": "TAX",
+                  "typeCode": "DEFAUL",
+                  "price": 1.87,
+                  "rate": 19,
+                  "basePrice": 9.83
+                }
+              ]
+            },
+            {
+              "name": "10:30 PREMIUM",
+              "serviceCode": "YJ",
+              "localServiceCode": "YJ",
+              "serviceTypeCode": "SCH",
+              "price": 11.9,
+              "isCustomerAgreement": false,
+              "isMarketedService": true,
+              "priceBreakdown": [
+                {
+                  "priceType": "TAX",
+                  "typeCode": "DEFAUL",
+                  "price": 1.9,
+                  "rate": 19,
+                  "basePrice": 10
+                }
+              ]
+            },
+            {
+              "name": "FUEL SURCHARGE",
+              "serviceCode": "FF",
+              "localServiceCode": "FF",
+              "serviceTypeCode": "SCH",
+              "price": 2.12,
+              "isCustomerAgreement": false,
+              "isMarketedService": false,
+              "priceBreakdown": [
+                {
+                  "priceType": "TAX",
+                  "typeCode": "DEFAUL",
+                  "price": 0.34,
+                  "rate": 19,
+                  "basePrice": 1.78
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "pickupCapabilities": {
+        "nextBusinessDay": false,
+        "localCutoffDateAndTime": "2021-01-18T17:00:00",
+        "GMTCutoffTime": "18:30:00",
+        "pickupEarliest": "10:00:00",
+        "pickupLatest": "18:30:00",
+        "originServiceAreaCode": "BER",
+        "originFacilityAreaCode": "BE3",
+        "pickupAdditionalDays": 0,
+        "pickupDayOfWeek": 1
+      },
+      "deliveryCapabilities": {
+        "deliveryTypeCode": "QDDF",
+        "estimatedDeliveryDateAndTime": "2021-01-19T10:00:00",
+        "destinationServiceAreaCode": "HAM",
+        "destinationFacilityAreaCode": "HH4",
+        "deliveryAdditionalDays": 0,
+        "deliveryDayOfWeek": 2,
+        "totalTransitDays": 1
+      },
+      "pricingDate": "2022-01-14"
+    },
+    {
+      "productName": "EXPRESS DOMESTIC 12:00",
+      "productCode": "1",
+      "localProductCode": "L",
+      "localProductCountryCode": "DE",
+      "networkTypeCode": "TD",
+      "isCustomerAgreement": false,
+      "weight": {
+        "volumetric": 3.6,
+        "provided": 4,
+        "unitOfMeasurement": "metric"
+      },
+      "totalPrice": [
+        {
+          "currencyType": "BILLC",
+          "priceCurrency": "EUR",
+          "price": 16.64
+        },
+        {
+          "currencyType": "PULCL",
+          "price": 0
+        },
+        {
+          "currencyType": "BASEC",
+          "price": 0
+        }
+      ],
+      "totalPriceBreakdown": [
+        {
+          "currencyType": "BILLC",
+          "priceCurrency": "EUR",
+          "priceBreakdown": [
+            {
+              "typeCode": "STTXA",
+              "price": 2.66
+            },
+            {
+              "typeCode": "SPRQT",
+              "price": 11.7
+            }
+          ]
+        }
+      ],
+      "detailedPriceBreakdown": [
+        {
+          "currencyType": "BILLC",
+          "priceCurrency": "EUR",
+          "breakdown": [
+            {
+              "name": "EXPRESS DOMESTIC 12:00",
+              "price": 11.7,
+              "priceBreakdown": [
+                {
+                  "priceType": "TAX",
+                  "typeCode": "DEFAUL",
+                  "price": 1.87,
+                  "rate": 19,
+                  "basePrice": 9.83
+                }
+              ]
+            },
+            {
+              "name": "12:00 PREMIUM",
+              "serviceCode": "YK",
+              "localServiceCode": "YK",
+              "serviceTypeCode": "SCH",
+              "price": 3.57,
+              "isCustomerAgreement": false,
+              "isMarketedService": true,
+              "priceBreakdown": [
+                {
+                  "priceType": "TAX",
+                  "typeCode": "DEFAUL",
+                  "price": 0.57,
+                  "rate": 19,
+                  "basePrice": 3
+                }
+              ]
+            },
+            {
+              "name": "FUEL SURCHARGE",
+              "serviceCode": "FF",
+              "localServiceCode": "FF",
+              "serviceTypeCode": "SCH",
+              "price": 1.37,
+              "isCustomerAgreement": false,
+              "isMarketedService": false,
+              "priceBreakdown": [
+                {
+                  "priceType": "TAX",
+                  "typeCode": "DEFAUL",
+                  "price": 0.22,
+                  "rate": 19,
+                  "basePrice": 1.15
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "pickupCapabilities": {
+        "nextBusinessDay": false,
+        "localCutoffDateAndTime": "2021-01-18T17:00:00",
+        "GMTCutoffTime": "18:30:00",
+        "pickupEarliest": "10:00:00",
+        "pickupLatest": "18:30:00",
+        "originServiceAreaCode": "BER",
+        "originFacilityAreaCode": "BE3",
+        "pickupAdditionalDays": 0,
+        "pickupDayOfWeek": 1
+      },
+      "deliveryCapabilities": {
+        "deliveryTypeCode": "QDDF",
+        "estimatedDeliveryDateAndTime": "2021-01-19T12:00:00",
+        "destinationServiceAreaCode": "HAM",
+        "destinationFacilityAreaCode": "HH4",
+        "deliveryAdditionalDays": 0,
+        "deliveryDayOfWeek": 2,
+        "totalTransitDays": 1
+      },
+      "pricingDate": "2022-01-14"
+    },
+    {
+      "productName": "EXPRESS EASY DOC",
+      "productCode": "7",
+      "localProductCode": "7",
+      "localProductCountryCode": "DE",
+      "networkTypeCode": "TD",
+      "isCustomerAgreement": true,
+      "weight": {
+        "volumetric": 1.8,
+        "provided": 4,
+        "unitOfMeasurement": "metric"
+      },
+      "totalPrice": [
+        {
+          "currencyType": "BILLC",
+          "price": 0
+        },
+        {
+          "currencyType": "PULCL",
+          "price": 0
+        },
+        {
+          "currencyType": "BASEC",
+          "price": 0
+        }
+      ],
+      "detailedPriceBreakdown": [],
+      "pickupCapabilities": {
+        "nextBusinessDay": false,
+        "localCutoffDateAndTime": "2021-01-18T17:00:00",
+        "GMTCutoffTime": "18:30:00",
+        "pickupEarliest": "10:00:00",
+        "pickupLatest": "18:30:00",
+        "originServiceAreaCode": "BER",
+        "originFacilityAreaCode": "BE3",
+        "pickupAdditionalDays": 0,
+        "pickupDayOfWeek": 1
+      },
+      "deliveryCapabilities": {
+        "deliveryTypeCode": "QDDF",
+        "estimatedDeliveryDateAndTime": "2021-01-19T23:59:00",
+        "destinationServiceAreaCode": "HAM",
+        "destinationFacilityAreaCode": "HH4",
+        "deliveryAdditionalDays": 0,
+        "deliveryDayOfWeek": 2,
+        "totalTransitDays": 1
+      },
+      "pricingDate": "2022-01-14"
+    }
+  ]
+}
