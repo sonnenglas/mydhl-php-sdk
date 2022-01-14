@@ -22,7 +22,7 @@ class Client
     public function __construct(
         protected string $username,
         protected string $password,
-        protected bool $testMode = false
+        protected bool $testMode
     ) {
         $this->baseUri = $this->testMode ? self::URI_TEST : self::URI_PRODUCTION;
 

@@ -32,7 +32,7 @@ class RateService
         'shippingDate',
     ];
 
-    private const RETRIEVE_RATES_ONE_PIECE_URL = '/rates';
+    private const RETRIEVE_RATES_ONE_PIECE_URL = 'rates';
 
     public function __construct(private Client $client)
     {

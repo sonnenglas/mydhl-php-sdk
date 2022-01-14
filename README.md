@@ -33,12 +33,12 @@ $destinationAddress = new RateAddress(
 
 $package = new Package(
     weight: 10, // kg
-    width: 30, // cm
     height: 20, // cm
     length: 10, // cm
+    width: 30, // cm
 );
 
-$shippingDate = new DateTimeImmutable('2021-01-15 12:00:00')
+$shippingDate = new DateTimeImmutable('2021-01-15 12:00:00');
 
 $rates = $rateService->setAccountNumber('99999999')
     ->setOriginAddress($originAddress)
