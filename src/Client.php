@@ -62,7 +62,9 @@ class Client
 
     protected function getAuthorizationHeader(): string
     {
-        return base64_encode("{$this->username}:{$this->password}");
+        $token = base64_encode("{$this->username}:{$this->password}");
+
+        return "Basic $token";
     }
 
     protected function generateMessageReference(): string

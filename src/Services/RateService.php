@@ -126,9 +126,9 @@ class RateService
             'height' => (string) $this->package->getHeight(),
             'width' => (string) $this->package->getWidth(),
             'plannedShippingDate' => $this->shippingDate->format('Y-m-d'),
-            'isCustomsDeclarable' => $this->isCustomsDeclarable,
+            'isCustomsDeclarable' => $this->isCustomsDeclarable ? 'true' : 'false',
             'unitOfMeasurement' => $this->unitOfMeasurement,
-            'nextBusinessDay' => $this->nextBusinessDay,
+            'nextBusinessDay' => $this->nextBusinessDay ? 'true' : 'false',
         ];
     }
 }
