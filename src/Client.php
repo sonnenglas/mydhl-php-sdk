@@ -15,8 +15,6 @@ class Client
 
     protected const URI_TEST = 'https://express.api.dhl.com/mydhlapi/test/';
 
-    protected GuzzleClient $httpClient;
-
     protected string $baseUri;
 
     protected string $lastMessageReference;
@@ -27,8 +25,6 @@ class Client
         protected bool $testMode
     ) {
         $this->baseUri = $this->testMode ? self::URI_TEST : self::URI_PRODUCTION;
-
-        $this->httpClient = new GuzzleClient($this->getHttpClientConfig());
     }
 
     public function enableMockServer(): void
@@ -46,16 +42,11 @@ class Client
      */
     public function get(string $uri, array $query): ResponseInterface
     {
-        return $this->httpClient->request('GET', $uri, $this->getRequestOptions($query));
+        $httpClient = new GuzzleClient($this->getHttpClientConfig());
+
+        return $httpClient->request('GET', $uri, $this->getRequestOptions($query));
     }
 
-    /**
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function post(string $uri, array $query): ResponseInterface
-    {
-        return $this->httpClient->request('POST', $uri, $this->getRequestOptions($query));
-    }
 
     protected function getHttpClientConfig(): array
     {
