@@ -18,6 +18,11 @@ class MyDHL
         $this->client = new Client($username, $password, $testMode);
     }
 
+    public function enableMockServer(): void
+    {
+        $this->client->enableMockServer();
+    }
+
     public function getRateService(): RateService
     {
         return new RateService($this->client);
