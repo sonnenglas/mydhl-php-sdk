@@ -9,7 +9,6 @@ use Psr\Http\Message\ResponseInterface;
 
 class Client
 {
-
     protected const URI_PRODUCTION = 'https://express.api.dhl.com/mydhlapi/';
 
     protected const URI_MOCK = 'https://api-mock.dhl.com/mydhlapi/';
@@ -32,7 +31,7 @@ class Client
         $this->httpClient = new GuzzleClient($this->getHttpClientConfig());
     }
 
-    public function enableMockServer()
+    public function enableMockServer(): void
     {
         $this->baseUri = self::URI_MOCK;
     }
