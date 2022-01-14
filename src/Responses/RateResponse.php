@@ -10,7 +10,6 @@ class RateResponse
 {
     public function __construct(protected ResponseInterface $response)
     {
-
     }
 
     public function getResponse(): array
