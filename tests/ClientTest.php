@@ -13,6 +13,6 @@ class ClientTest extends TestCase
         $testMode = true;
         $client = new Client('user', 'pass', $testMode);
 
-        $this->assertStringContainsString('test', $client->getBaseUrl());
+        $this->assertStringContainsString('test', $client->getBaseUri());
     }
 }

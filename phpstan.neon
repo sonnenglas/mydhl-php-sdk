@@ -5,3 +5,4 @@ parameters:
     - tests
   ignoreErrors:
     - '#Dynamic call to static method PHPUnit\\Framework\\.*#'
+    - '#Variable property access on \$this\(Sonnenglas\\MyDHL\\Services\\RateService\).#'

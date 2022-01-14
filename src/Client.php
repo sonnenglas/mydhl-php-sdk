@@ -39,9 +39,7 @@ class Client
      */
     public function get(string $uri, array $query): ResponseInterface
     {
-        return $this->httpClient->request('GET', $uri, [
-            'query' => $query,
-        ]);
+        return $this->httpClient->request('GET', $uri, $this->getRequestOptions($query));
     }
 
     /**
@@ -49,11 +47,8 @@ class Client
      */
     public function post(string $uri, array $query): ResponseInterface
     {
-        return $this->httpClient->request('GET', $uri, [
-            'query' => $query,
-        ]);
+        return $this->httpClient->request('POST', $uri, $this->getRequestOptions($query));
     }
-
 
     protected function getHttpClientConfig(): array
     {
@@ -62,7 +57,7 @@ class Client
             'headers' => [
                 'Authorization' => $this->getAuthorizationHeader(),
                 'Content-Type' => 'application/json',
-                'Message-Reference' => $this->generateMessageReference(),
+
             ],
         ];
     }
@@ -77,5 +72,15 @@ class Client
         $this->lastMessageReference = uniqid();
 
         return $this->lastMessageReference;
+    }
+
+    protected function getRequestOptions(array $query): array
+    {
+        return [
+            'query' => $query,
+            'headers' => [
+                'Message-Reference' => $this->generateMessageReference(),
+            ],
+        ];
     }
 }

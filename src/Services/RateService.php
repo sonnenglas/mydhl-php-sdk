@@ -32,19 +32,21 @@ class RateService
         'shippingDate',
     ];
 
+    private const RETRIEVE_RATES_ONE_PIECE_URL = '/rates';
+
     public function __construct(private Client $client)
     {
     }
 
     /**
-     * @throws MissingParameterException
+     * @throws MissingParameterException|\GuzzleHttp\Exception\GuzzleException
      */
-    public function getRates(): RateResponse
+    public function getRates(): array
     {
         $this->validateParams();
         $query = $this->prepareQuery();
-        $response = $this->client->get($query);
-        return new RateResponse($response);
+        $response = $this->client->get(self::RETRIEVE_RATES_ONE_PIECE_URL, $query);
+        return (new RateResponse($response))->getResponse();
     }
 
     public function setAccountNumber(string $accountNumber): RateService
@@ -119,10 +121,10 @@ class RateService
             'destinationCountryCode ' => $this->destinationAddress->getCountryCode(),
             'destinationPostalCode' => $this->destinationAddress->getPostalCode(),
             'destinationCityName' => $this->destinationAddress->getCityName(),
-            'weight' => $this->package->getWeight(),
-            'length' => $this->package->getLength(),
-            'height' => $this->package->getHeight(),
-            'width' => $this->package->getWidth(),
+            'weight' => (string) $this->package->getWeight(),
+            'length' => (string) $this->package->getLength(),
+            'height' => (string) $this->package->getHeight(),
+            'width' => (string) $this->package->getWidth(),
             'plannedShippingDate' => $this->shippingDate->format('Y-m-d'),
             'isCustomsDeclarable' => $this->isCustomsDeclarable,
             'unitOfMeasurement ' => $this->unitOfMeasurement,
