@@ -115,10 +115,10 @@ class RateService
     {
         return [
             'accountNumber' => $this->accountNumber,
-            'originCountryCode ' => $this->originAddress->getCountryCode(),
+            'originCountryCode' => $this->originAddress->getCountryCode(),
             'originPostalCode' => $this->originAddress->getPostalCode(),
             'originCityName' => $this->originAddress->getCityName(),
-            'destinationCountryCode ' => $this->destinationAddress->getCountryCode(),
+            'destinationCountryCode' => $this->destinationAddress->getCountryCode(),
             'destinationPostalCode' => $this->destinationAddress->getPostalCode(),
             'destinationCityName' => $this->destinationAddress->getCityName(),
             'weight' => (string) $this->package->getWeight(),
@@ -127,7 +127,7 @@ class RateService
             'width' => (string) $this->package->getWidth(),
             'plannedShippingDate' => $this->shippingDate->format('Y-m-d'),
             'isCustomsDeclarable' => $this->isCustomsDeclarable,
-            'unitOfMeasurement ' => $this->unitOfMeasurement,
+            'unitOfMeasurement' => $this->unitOfMeasurement,
             'nextBusinessDay' => $this->nextBusinessDay,
         ];
     }
