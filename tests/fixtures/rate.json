@@ -1,0 +1,104 @@
+{
+  "productName": "MEDICAL EXPRESS DOMESTIC",
+  "productCode": "C",
+  "localProductCode": "B",
+  "localProductCountryCode": "DE",
+  "networkTypeCode": "TD",
+  "isCustomerAgreement": true,
+  "weight": {
+    "volumetric": 3.6,
+    "provided": 4,
+    "unitOfMeasurement": "metric"
+  },
+  "totalPrice": [
+    {
+      "currencyType": "BILLC",
+      "priceCurrency": "EUR",
+      "price": 53.25
+    },
+    {
+      "currencyType": "PULCL",
+      "price": 0
+    },
+    {
+      "currencyType": "BASEC",
+      "price": 0
+    }
+  ],
+  "totalPriceBreakdown": [
+    {
+      "currencyType": "BILLC",
+      "priceCurrency": "EUR",
+      "priceBreakdown": [
+        {
+          "typeCode": "STTXA",
+          "price": 8.5
+        },
+        {
+          "typeCode": "SPRQT",
+          "price": 49.42
+        }
+      ]
+    }
+  ],
+  "detailedPriceBreakdown": [
+    {
+      "currencyType": "BILLC",
+      "priceCurrency": "EUR",
+      "breakdown": [
+        {
+          "name": "MEDICAL EXPRESS DOMESTIC",
+          "price": 49.42,
+          "priceBreakdown": [
+            {
+              "priceType": "TAX",
+              "typeCode": "DEFAUL",
+              "price": 7.89,
+              "rate": 19,
+              "basePrice": 41.53
+            }
+          ]
+        },
+        {
+          "name": "FUEL SURCHARGE",
+          "serviceCode": "FF",
+          "localServiceCode": "FF",
+          "serviceTypeCode": "SCH",
+          "price": 3.83,
+          "isCustomerAgreement": false,
+          "isMarketedService": false,
+          "priceBreakdown": [
+            {
+              "priceType": "TAX",
+              "typeCode": "DEFAUL",
+              "price": 0.61,
+              "rate": 19,
+              "basePrice": 3.22
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "pickupCapabilities": {
+    "nextBusinessDay": false,
+    "localCutoffDateAndTime": "2021-01-18T17:00:00",
+    "GMTCutoffTime": "18:30:00",
+    "pickupEarliest": "10:00:00",
+    "pickupLatest": "18:30:00",
+    "originServiceAreaCode": "BER",
+    "originFacilityAreaCode": "BE3",
+    "pickupAdditionalDays": 0,
+    "pickupDayOfWeek": 1
+  },
+  "deliveryCapabilities": {
+    "deliveryTypeCode": "QDDF",
+    "estimatedDeliveryDateAndTime": "2021-01-19T09:00:00",
+    "destinationServiceAreaCode": "HAM",
+    "destinationFacilityAreaCode": "HH4",
+    "deliveryAdditionalDays": 0,
+    "deliveryDayOfWeek": 2,
+    "totalTransitDays": 1
+  },
+  "pricingDate": "2022-01-14"
+},
