@@ -12,16 +12,31 @@ class RateResponseParserTest extends TestCase
 {
     private RateResponseParser $rateResponseParser;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->rateResponseParser = new RateResponseParser($fakeResponse)
+        $this->rateResponseParser = new RateResponseParser();
+    }
+
+    public function testParseTotalPrice(): void
+    {
+        $expectedResult = [53.25, "EUR"];
+
+        $rate = json_decode(file_get_contents(__DIR__ . "/../fixtures/rate.json"), true);
+
+        $totalPrices = $rate['totalPrice'];
+
+        $result = $this->executePrivateMethod($this->rateResponseParser, 'parseTotalPrice', [$totalPrices]);
+
+        $this->assertEquals($expectedResult, $result);
     }
 
     public function testParseRate(): void
     {
-        $fakeRate = file_get_contents(__DIR__ . "/../fixtures/rate.json");
+        $fakeRate = json_decode(file_get_contents(__DIR__ . "/../fixtures/rate.json"), true);
 
-        $this->executePrivateMethod
+        $result = $this->executePrivateMethod($this->rateResponseParser, 'parseRate', [$fakeRate]);
+
+        $this->assertTrue($result instanceof Rate);
     }
 
 //    public function testParse(): void
