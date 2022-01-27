@@ -46,7 +46,7 @@ class RateService
         $this->validateParams();
         $query = $this->prepareQuery();
         $response = $this->client->get(self::RETRIEVE_RATES_ONE_PIECE_URL, $query);
-        return (new RateResponseParser($response))->parse();
+        return (new RateResponseParser())->parse($response);
     }
 
     public function setAccountNumber(string $accountNumber): RateService
