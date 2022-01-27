@@ -1,10 +1,10 @@
 {
-  "productName": "MEDICAL EXPRESS DOMESTIC",
-  "productCode": "C",
-  "localProductCode": "B",
+  "productName": "EXPRESS DOMESTIC 12:00",
+  "productCode": "1",
+  "localProductCode": "L",
   "localProductCountryCode": "DE",
   "networkTypeCode": "TD",
-  "isCustomerAgreement": true,
+  "isCustomerAgreement": false,
   "weight": {
     "volumetric": 3.6,
     "provided": 4,
@@ -14,7 +14,7 @@
     {
       "currencyType": "BILLC",
       "priceCurrency": "EUR",
-      "price": 53.25
+      "price": 16.64
     },
     {
       "currencyType": "PULCL",
@@ -32,11 +32,11 @@
       "priceBreakdown": [
         {
           "typeCode": "STTXA",
-          "price": 8.5
+          "price": 2.66
         },
         {
           "typeCode": "SPRQT",
-          "price": 49.42
+          "price": 11.7
         }
       ]
     }
@@ -47,15 +47,33 @@
       "priceCurrency": "EUR",
       "breakdown": [
         {
-          "name": "MEDICAL EXPRESS DOMESTIC",
-          "price": 49.42,
+          "name": "EXPRESS DOMESTIC 12:00",
+          "price": 11.7,
           "priceBreakdown": [
             {
               "priceType": "TAX",
               "typeCode": "DEFAUL",
-              "price": 7.89,
+              "price": 1.87,
               "rate": 19,
-              "basePrice": 41.53
+              "basePrice": 9.83
+            }
+          ]
+        },
+        {
+          "name": "12:00 PREMIUM",
+          "serviceCode": "YK",
+          "localServiceCode": "YK",
+          "serviceTypeCode": "SCH",
+          "price": 3.57,
+          "isCustomerAgreement": false,
+          "isMarketedService": true,
+          "priceBreakdown": [
+            {
+              "priceType": "TAX",
+              "typeCode": "DEFAUL",
+              "price": 0.57,
+              "rate": 19,
+              "basePrice": 3
             }
           ]
         },
@@ -64,16 +82,16 @@
           "serviceCode": "FF",
           "localServiceCode": "FF",
           "serviceTypeCode": "SCH",
-          "price": 3.83,
+          "price": 1.37,
           "isCustomerAgreement": false,
           "isMarketedService": false,
           "priceBreakdown": [
             {
               "priceType": "TAX",
               "typeCode": "DEFAUL",
-              "price": 0.61,
+              "price": 0.22,
               "rate": 19,
-              "basePrice": 3.22
+              "basePrice": 1.15
             }
           ]
         }
@@ -93,7 +111,7 @@
   },
   "deliveryCapabilities": {
     "deliveryTypeCode": "QDDF",
-    "estimatedDeliveryDateAndTime": "2021-01-19T09:00:00",
+    "estimatedDeliveryDateAndTime": "2021-01-19T12:00:00",
     "destinationServiceAreaCode": "HAM",
     "destinationFacilityAreaCode": "HH4",
     "deliveryAdditionalDays": 0,

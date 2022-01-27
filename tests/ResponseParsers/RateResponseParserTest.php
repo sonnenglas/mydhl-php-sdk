@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\ResponseParsers;
 
+use DateTimeImmutable;
 use Sonnenglas\MyDHL\ResponseParsers\RateResponseParser;
 use Sonnenglas\MyDHL\ValueObjects\Rate;
 use Tests\TestCase;
@@ -19,8 +20,9 @@ class RateResponseParserTest extends TestCase
 
     public function testParseTotalPrice(): void
     {
-        $expectedResult = [53.25, "EUR"];
+        $expectedResult = [16.64, "EUR"];
 
+        /** @var Rate $rate */
         $rate = json_decode(file_get_contents(__DIR__ . "/../fixtures/rate.json"), true);
 
         $totalPrices = $rate['totalPrice'];
@@ -34,9 +36,26 @@ class RateResponseParserTest extends TestCase
     {
         $fakeRate = json_decode(file_get_contents(__DIR__ . "/../fixtures/rate.json"), true);
 
-        $result = $this->executePrivateMethod($this->rateResponseParser, 'parseRate', [$fakeRate]);
+        /** @var Rate $rate */
+        $rate = $this->executePrivateMethod($this->rateResponseParser, 'parseRate', [$fakeRate]);
 
-        $this->assertTrue($result instanceof Rate);
+        $this->assertTrue($rate instanceof Rate);
+
+        $expectedEstimatedDeliveryDate =  new DateTimeImmutable('2021-01-19T12:00:00');
+
+        $expectedPricingDate = new DateTimeImmutable('2022-01-14 00:00:00');
+
+        $this->assertEquals("EXPRESS DOMESTIC 12:00", $rate->getProductName());
+        $this->assertEquals("1", $rate->getProductCode());
+        $this->assertEquals("L", $rate->getLocalProductCode());
+        $this->assertEquals("DE", $rate->getLocalProductCountryCode());
+        $this->assertEquals(false, $rate->getIsCustomerAgreement());
+        $this->assertEquals(3.6, $rate->getWeightVolumetric());
+        $this->assertEquals(4, $rate->getWeightProvided());
+        $this->assertEquals(16.64, $rate->getTotalPrice());
+        $this->assertEquals("EUR", $rate->getCurrency());
+        $this->assertEquals($expectedEstimatedDeliveryDate, $rate->getEstimatedDeliveryDateAndTime());
+        $this->assertEquals($expectedPricingDate, $rate->getPricingDate());
     }
 
 //    public function testParse(): void
