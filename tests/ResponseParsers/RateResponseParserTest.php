@@ -58,11 +58,24 @@ class RateResponseParserTest extends TestCase
         $this->assertEquals($expectedPricingDate, $rate->getPricingDate());
     }
 
-//    public function testParse(): void
-//    {
-//        $fakeResponse = file_get_contents(__DIR__ . "/../fixtures/get_rates.json");
-//        $fakeResponse = json_decode($fakeResponse, true);
-//        $parsedResponse = (new RateResponseParser($fakeResponse))->parse();
-//        $this->assertEquals([], $parsedResponse);
-//    }
+    public function testParse(): void
+    {
+        $expectedProductNames = [
+            "EXPRESS DOMESTIC 9:00",
+            "EXPRESS DOMESTIC 10:00",
+            "EXPRESS DOMESTIC 12:00",
+            "MEDICAL EXPRESS DOMESTIC",
+            "EXPRESS EASY DOC",
+        ];
+
+        $fakeResponse = file_get_contents(__DIR__ . "/../fixtures/get_rates.json");
+        $fakeResponse = json_decode($fakeResponse, true);
+        $rates = (new RateResponseParser())->parse($fakeResponse);
+
+        $this->assertEquals(5, count($rates));
+
+        foreach ($rates as $rate) {
+            $this->assertTrue(in_array($rate->getProductName(), $expectedProductNames, true));
+        }
+    }
 }

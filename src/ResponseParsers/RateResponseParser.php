@@ -11,16 +11,15 @@ use Sonnenglas\MyDHL\ValueObjects\Rate;
 
 class RateResponseParser
 {
-    public function parse(array $response): array
-    {
-        return $response;
-    }
+    public const DEFAULT_CURRENCY = 'EUR';
 
     /**
+     * Parse the API rates response and return array of available rates
      * @param array $response
      * @return Rate[]
+     * @throws TotalPriceNotFoundException
      */
-    protected function extractRates(array $response): array
+    public function parse(array $response): array
     {
         $rates = [];
 
@@ -70,9 +69,15 @@ class RateResponseParser
      */
     protected function parseTotalPrice(array $prices): array
     {
-        foreach ($prices as $price) {
-            if ($price['currencyType'] === 'BILLC') {
-                return [(float) $price['price'], (string) $price['priceCurrency']];
+        foreach ($prices as $p) {
+            if ($p['currencyType'] === 'BILLC') {
+                $price = (float) $p['price'];
+
+                if (!isset($p['priceCurrency']) && $price == 0.00) {
+                    return [0, self::DEFAULT_CURRENCY];
+                }
+
+                return [$price, (string) $p['priceCurrency']];
             }
         }
 
