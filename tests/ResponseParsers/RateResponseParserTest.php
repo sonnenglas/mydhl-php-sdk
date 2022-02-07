@@ -72,7 +72,7 @@ class RateResponseParserTest extends TestCase
         $fakeResponse = json_decode($fakeResponse, true);
         $rates = (new RateResponseParser())->parse($fakeResponse);
 
-        $this->assertEquals(5, count($rates));
+        $this->assertCount(5, $rates);
 
         foreach ($rates as $rate) {
             $this->assertTrue(in_array($rate->getProductName(), $expectedProductNames, true));

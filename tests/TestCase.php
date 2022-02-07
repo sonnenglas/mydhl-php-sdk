@@ -28,8 +28,11 @@ abstract class TestCase extends BaseTestCase
      * @return mixed
      * @throws \ReflectionException
      */
-    protected function executePrivateMethod(object $object, string $methodName, array $params = []): mixed
-    {
+    protected function executePrivateMethod(
+        object $object,
+        string $methodName,
+        array $params = []
+    ): mixed {
         $reflection = new ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
