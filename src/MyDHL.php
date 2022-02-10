@@ -27,4 +27,9 @@ class MyDHL
     {
         return new RateService($this->client);
     }
+
+    public function getShipmentService(): ShipmentService
+    {
+        return new ShipmentService($this->client);
+    }
 }
