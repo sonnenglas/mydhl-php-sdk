@@ -135,7 +135,7 @@ class ShipmentService
         return $this;
     }
 
-    public function setShipperDetails(Address $shipperAddress, Contact $shipperContact): ShipperServiceShipmentService
+    public function setShipperDetails(Address $shipperAddress, Contact $shipperContact): ShipmentService
     {
         $this->shipperAddress = $shipperAddress;
         $this->shipperContact = $shipperContact;

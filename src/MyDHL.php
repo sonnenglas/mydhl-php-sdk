@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Sonnenglas\MyDHL;
 
 use Sonnenglas\MyDHL\Services\RateService;
+use Sonnenglas\MyDHL\Services\ShipmentService;
 
 class MyDHL
 {

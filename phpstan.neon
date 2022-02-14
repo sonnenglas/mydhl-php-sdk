@@ -6,3 +6,4 @@ parameters:
   ignoreErrors:
     - '#Dynamic call to static method PHPUnit\\Framework\\.*#'
     - '#Variable property access on \$this\(Sonnenglas\\MyDHL\\Services\\RateService\).#'
+    - '#Variable property access on \$this\(Sonnenglas\\MyDHL\\Services\\ShipmentService\).#'
