@@ -6,13 +6,16 @@ namespace Sonnenglas\MyDHL\Services;
 
 use DateTimeImmutable;
 use Sonnenglas\MyDHL\Client;
-use Sonnenglas\MyDHL\Exceptions\MissingParameterException;
+use Sonnenglas\MyDHL\Exceptions\MissingArgumentException;
 use Sonnenglas\MyDHL\ResponseParsers\RateResponseParser;
+use Sonnenglas\MyDHL\Traits\ConvertBoolToString;
 use Sonnenglas\MyDHL\ValueObjects\Package;
 use Sonnenglas\MyDHL\ValueObjects\RateAddress;
 
 class RateService
 {
+    use ConvertBoolToString;
+
     private Package $package;
     private RateAddress $destinationAddress;
     private RateAddress $originAddress;
@@ -24,7 +27,7 @@ class RateService
     private bool $nextBusinessDay = false;
     protected string $unitOfMeasurement = 'metric';
 
-    private array $requiredParameters = [
+    private array $requiredArguments = [
         'accountNumber',
         'destinationAddress',
         'originAddress',
@@ -38,9 +41,6 @@ class RateService
     {
     }
 
-    /**
-     * @throws MissingParameterException|\GuzzleHttp\Exception\GuzzleException
-     */
     public function getRates(): array
     {
         $this->validateParams();
@@ -99,19 +99,16 @@ class RateService
         return $this;
     }
 
-    /**
-     * @throws MissingParameterException
-     */
-    protected function validateParams(): void
+    private function validateParams(): void
     {
-        foreach ($this->requiredParameters as $param) {
+        foreach ($this->requiredArguments as $param) {
             if (!isset($this->{$param})) {
-                throw new MissingParameterException("Missing parameter: {$param}");
+                throw new MissingArgumentException("Missing argument: {$param}");
             }
         }
     }
 
-    protected function prepareQuery(): array
+    private function prepareQuery(): array
     {
         return [
             'accountNumber' => $this->accountNumber,
@@ -126,9 +123,9 @@ class RateService
             'height' => (string) $this->package->getHeight(),
             'width' => (string) $this->package->getWidth(),
             'plannedShippingDate' => $this->shippingDate->format('Y-m-d'),
-            'isCustomsDeclarable' => (string) $this->isCustomsDeclarable ? 'true' : 'false',
+            'isCustomsDeclarable' => $this->convertBoolToString($this->isCustomsDeclarable),
             'unitOfMeasurement' => $this->unitOfMeasurement,
-            'nextBusinessDay' => (string) $this->nextBusinessDay ? 'true' : 'false',
+            'nextBusinessDay' => $this->convertBoolToString($this->nextBusinessDay),
         ];
     }
 }

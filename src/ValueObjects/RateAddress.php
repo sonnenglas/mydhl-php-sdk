@@ -45,10 +45,6 @@ class RateAddress
             throw new InvalidAddressException("Country Code must be 2 characters long. Entered: {$this->countryCode}");
         }
 
-        if (strlen($this->postalCode) < 3) {
-            throw new InvalidAddressException("Postal Code must be at least 3 characters long. Entered: {$this->postalCode}");
-        }
-
         if (strlen($this->cityName) === 0) {
             throw new InvalidAddressException("City name must not be empty. Entered: {$this->cityName}");
         }

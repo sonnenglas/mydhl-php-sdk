@@ -52,6 +52,21 @@ class Client
         return json_decode((string) $response->getBody(), true);
     }
 
+    /**
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function post(string $uri, array $query): array
+    {
+        $httpClient = new GuzzleClient();
+
+        $options = $this->getRequestOptions($query);
+
+        $response = $httpClient->request('POST', $uri, $options);
+
+        return json_decode((string) $response->getBody(), true);
+    }
+
+
     protected function generateMessageReference(): string
     {
         $this->lastMessageReference = Uuid::uuid6()->toString();
