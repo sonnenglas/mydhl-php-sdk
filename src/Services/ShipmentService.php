@@ -124,7 +124,7 @@ class ShipmentService
      */
     public function setAccounts(array $accounts): ShipmentService
     {
-        foreach ($this->accounts as $account) {
+        foreach ($accounts as $account) {
             if (!$account instanceof Account) {
                 throw new InvalidArgumentException("Array should contain values of type Account");
             }
@@ -171,13 +171,15 @@ class ShipmentService
             }
         }
 
+        $this->packages = $packages;
+
         return $this;
     }
 
     private function prepareQuery(): array
     {
         $query = [
-            'plannedShippingDateAndTime' => $this->plannedShippingDateAndTime->format('Y-m-d'),
+            'plannedShippingDateAndTime' => $this->plannedShippingDateAndTime->format(DateTimeImmutable::ATOM),
             'accounts' => $this->prepareAccountsQuery(),
             'customerDetails' => [
                 'shipperDetails' => [
@@ -228,6 +230,7 @@ class ShipmentService
     {
         $accounts = [];
 
+        /** @var Account $account */
         foreach ($this->accounts as $account) {
             $accounts[] = $account->getAsArray();
         }

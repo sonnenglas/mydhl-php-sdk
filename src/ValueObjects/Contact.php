@@ -17,6 +17,38 @@ class Contact
     ) {
     }
 
+    /**
+     * @return string
+     */
+    public function getPhone(): string
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCompanyName(): string
+    {
+        return $this->companyName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullName(): string
+    {
+        return $this->fullName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMobilePhone(): string
+    {
+        return $this->mobilePhone;
+    }
+
     public function getEmail(): string
     {
         return $this->email;

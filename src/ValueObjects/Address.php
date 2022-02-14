@@ -26,6 +26,46 @@ class Address
         $this->validateData();
     }
 
+    /**
+     * @return string
+     */
+    public function getAddressLine1(): string
+    {
+        return $this->addressLine1;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddressLine2(): string
+    {
+        return $this->addressLine2;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddressLine3(): string
+    {
+        return $this->addressLine3;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountyName(): string
+    {
+        return $this->countyName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProvinceCode(): string
+    {
+        return $this->provinceCode;
+    }
+
     public function getCountryCode(): string
     {
         return $this->countryCode;
