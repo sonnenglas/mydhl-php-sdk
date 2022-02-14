@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Sonnenglas\MyDHL\ResponseParsers;
 
-
 use Sonnenglas\MyDHL\ValueObjects\Shipment;
 
 class ShipmentResponseParser

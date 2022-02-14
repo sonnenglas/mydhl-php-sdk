@@ -264,6 +264,5 @@ class ShipmentService
                 throw new MissingArgumentException("Missing argument: {$param}");
             }
         }
-
     }
 }

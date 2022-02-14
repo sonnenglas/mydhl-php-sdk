@@ -19,7 +19,7 @@ Retrieve DHL Express products               | ![NO](https://via.placeholder.com/
 __SHIPMENT__ |
 Electronic Proof of Delivery                | ![NO](https://via.placeholder.com/40/c0000/000000?text=NO)
 Upload updated customs docs for shipment    | ![NO](https://via.placeholder.com/40/c0000/000000?text=NO)
-Create Shipment                             | ![NO](https://via.placeholder.com/40/c0000/000000?text=NO)
+Create Shipment                             | ![NO](https://via.placeholder.com/40/00c00/000000?text=YES)
 Upload Commercial Invoice Data for shipment | ![NO](https://via.placeholder.com/40/c0000/000000?text=NO)
 __TRACKING__ |
 Track a single DHL Express Shipment             | ![NO](https://via.placeholder.com/40/c0000/000000?text=NO)

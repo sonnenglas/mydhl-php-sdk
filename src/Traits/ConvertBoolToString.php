@@ -6,7 +6,6 @@ namespace Sonnenglas\MyDHL\Traits;
 
 trait ConvertBoolToString
 {
-
     private function convertBoolToString(bool $value): string
     {
         return $value ? 'true' : 'false';

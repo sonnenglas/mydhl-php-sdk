@@ -20,7 +20,6 @@ class Shipment
         private array $shipmentDetails = [],
         private array $shipmentCharges = [],
     ) {
-
     }
 
     /**
