@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\ResponseParsers;
 
 use Sonnenglas\MyDHL\ResponseParsers\ShipmentResponseParser;
+use Sonnenglas\MyDHL\ValueObjects\Shipment;
 use Tests\TestCase;
 
 class ShipmentResponseParserTest extends TestCase
@@ -20,6 +21,7 @@ class ShipmentResponseParserTest extends TestCase
     {
         $jsonResponse = json_decode(file_get_contents(__DIR__ . "/../fixtures/create_shipment_response.json"), true);
 
+        /** @var Shipment $shipment */
         $shipment = $this->shipmentResponseParser->parse($jsonResponse);
 
         $this->assertEquals("https://express.api.dhl.com/mydhlapi/shipments", $shipment->getUrl());
@@ -34,5 +36,8 @@ class ShipmentResponseParserTest extends TestCase
         );
         $this->assertEquals(147, $shipment->getShipmentCharges()[0]['price']);
         $this->assertEquals("can't return prices", $shipment->getWarnings()[0]);
+        // Simple check whether the label pdf is big enough. This means it probably holds
+        // a PDF file
+        $this->assertTrue(strlen($shipment->getLabelPdf()) > 20000);
     }
 }

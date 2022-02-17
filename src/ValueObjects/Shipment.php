@@ -15,11 +15,20 @@ class Shipment
         private string $trackingUrl,
         private string $dispatchConfirmationNumber,
         private array $warnings,
+        private string $labelPdf,
         private array $packages = [],
         private array $documents = [],
         private array $shipmentDetails = [],
         private array $shipmentCharges = [],
     ) {
+    }
+
+    /**
+     * @return string
+     */
+    public function getLabelPdf(): string
+    {
+        return $this->labelPdf;
     }
 
     /**
