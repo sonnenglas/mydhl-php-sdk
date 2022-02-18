@@ -15,8 +15,7 @@ use Tests\TestCase;
 
 class ShipmentServiceTest extends TestCase
 {
-
-    public function testPrepareQuery()
+    public function testPrepareQuery(): void
     {
         $client = new Client('fakeUser', 'fakePass', true);
         $shipmentService = new ShipmentService($client);

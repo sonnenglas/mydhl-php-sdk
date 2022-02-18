@@ -57,6 +57,7 @@ class ShipmentService
         'packages',
     ];
 
+    private array $lastResponse;
 
     private const CREATE_SHIPMENT_URL = 'shipments';
 
@@ -65,12 +66,17 @@ class ShipmentService
     {
     }
 
-    public function sendShipment(): Shipment
+    public function createShipment(): Shipment
     {
         $this->validateParams();
         $query = $this->prepareQuery();
-        $response = $this->client->post(self::CREATE_SHIPMENT_URL, $query);
-        return (new ShipmentResponseParser())->parse($response);
+        $this->lastResponse = $this->client->post(self::CREATE_SHIPMENT_URL, $query);
+        return (new ShipmentResponseParser($this->lastResponse))->parse();
+    }
+
+    public function getLastRawResponse(): array
+    {
+        return $this->lastResponse;
     }
 
     public function setPlannedShippingDateAndTime(DateTimeImmutable $date): ShipmentService

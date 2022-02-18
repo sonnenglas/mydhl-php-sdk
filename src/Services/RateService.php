@@ -35,6 +35,8 @@ class RateService
         'shippingDate',
     ];
 
+    private array $lastResponse;
+
     private const RETRIEVE_RATES_ONE_PIECE_URL = 'rates';
 
     public function __construct(private Client $client)
@@ -45,8 +47,13 @@ class RateService
     {
         $this->validateParams();
         $query = $this->prepareQuery();
-        $response = $this->client->get(self::RETRIEVE_RATES_ONE_PIECE_URL, $query);
-        return (new RateResponseParser())->parse($response);
+        $this->lastResponse = $this->client->get(self::RETRIEVE_RATES_ONE_PIECE_URL, $query);
+        return (new RateResponseParser($this->lastResponse))->parse();
+    }
+
+    public function getLastRawResponse(): array
+    {
+        return $this->lastResponse;
     }
 
     public function setAccountNumber(string $accountNumber): RateService

@@ -4,26 +4,31 @@ declare(strict_types=1);
 
 namespace Sonnenglas\MyDHL\ResponseParsers;
 
+use Sonnenglas\MyDHL\Traits\GetRawResponse;
 use Sonnenglas\MyDHL\ValueObjects\Shipment;
 
 class ShipmentResponseParser
 {
-    public function parse(array $response): Shipment
+    use GetRawResponse;
+
+    public function __construct(private array $response)
     {
+    }
 
-
+    public function parse(): Shipment
+    {
         return new Shipment(
-            url: $response['url'],
-            shipmentTrackingNumber: $response['shipmentTrackingNumber'],
-            cancelPickupUrl: $response['cancelPickupUrl'],
-            trackingUrl: $response['trackingUrl'],
-            dispatchConfirmationNumber: $response['dispatchConfirmationNumber'],
-            warnings: $response['warnings'],
-            labelPdf: $this->getLabelPdf($response),
-            packages: $response['packages'],
-            documents: $response['documents'],
-            shipmentDetails: $response['shipmentDetails'],
-            shipmentCharges: $response['shipmentCharges'],
+            url: $this->response['url'],
+            shipmentTrackingNumber: $this->response['shipmentTrackingNumber'],
+            cancelPickupUrl: $this->response['cancelPickupUrl'],
+            trackingUrl: $this->response['trackingUrl'],
+            dispatchConfirmationNumber: $this->response['dispatchConfirmationNumber'],
+            warnings: $this->response['warnings'],
+            labelPdf: $this->getLabelPdf($this->response),
+            packages: $this->response['packages'],
+            documents: $this->response['documents'],
+            shipmentDetails: $this->response['shipmentDetails'],
+            shipmentCharges: $this->response['shipmentCharges'],
         );
     }
 

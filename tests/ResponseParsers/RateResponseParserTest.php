@@ -11,15 +11,10 @@ use Tests\TestCase;
 
 class RateResponseParserTest extends TestCase
 {
-    private RateResponseParser $rateResponseParser;
-
-    public function setUp(): void
-    {
-        $this->rateResponseParser = new RateResponseParser();
-    }
-
     public function testParseTotalPrice(): void
     {
+        $rateResponseParser = new RateResponseParser([]);
+
         $expectedResult = [16.64, "EUR"];
 
         /** @var Rate $rate */
@@ -27,17 +22,19 @@ class RateResponseParserTest extends TestCase
 
         $totalPrices = $rate['totalPrice'];
 
-        $result = $this->executePrivateMethod($this->rateResponseParser, 'parseTotalPrice', [$totalPrices]);
+        $result = $this->executePrivateMethod($rateResponseParser, 'parseTotalPrice', [$totalPrices]);
 
         $this->assertEquals($expectedResult, $result);
     }
 
     public function testParseRate(): void
     {
+        $rateResponseParser = new RateResponseParser([]);
+
         $fakeRate = json_decode(file_get_contents(__DIR__ . "/../fixtures/rate.json"), true);
 
         /** @var Rate $rate */
-        $rate = $this->executePrivateMethod($this->rateResponseParser, 'parseRate', [$fakeRate]);
+        $rate = $this->executePrivateMethod($rateResponseParser, 'parseRate', [$fakeRate]);
 
         $this->assertTrue($rate instanceof Rate);
 
@@ -70,7 +67,10 @@ class RateResponseParserTest extends TestCase
 
         $fakeResponse = file_get_contents(__DIR__ . "/../fixtures/get_rates.json");
         $fakeResponse = json_decode($fakeResponse, true);
-        $rates = (new RateResponseParser())->parse($fakeResponse);
+
+        $rateResponseParser = new RateResponseParser($fakeResponse);
+
+        $rates = $rateResponseParser->parse();
 
         $this->assertCount(5, $rates);
 

@@ -10,19 +10,14 @@ use Tests\TestCase;
 
 class ShipmentResponseParserTest extends TestCase
 {
-    private ShipmentResponseParser $shipmentResponseParser;
-
-    public function setUp(): void
-    {
-        $this->shipmentResponseParser = new ShipmentResponseParser();
-    }
-
     public function testParse(): void
     {
         $jsonResponse = json_decode(file_get_contents(__DIR__ . "/../fixtures/create_shipment_response.json"), true);
 
+        $shipmentResponseParser = new ShipmentResponseParser($jsonResponse);
+
         /** @var Shipment $shipment */
-        $shipment = $this->shipmentResponseParser->parse($jsonResponse);
+        $shipment = $shipmentResponseParser->parse();
 
         $this->assertEquals("https://express.api.dhl.com/mydhlapi/shipments", $shipment->getUrl());
         $this->assertEquals("123456790", $shipment->getShipmentTrackingNumber());

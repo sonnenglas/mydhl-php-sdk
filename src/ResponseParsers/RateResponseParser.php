@@ -7,11 +7,18 @@ namespace Sonnenglas\MyDHL\ResponseParsers;
 use DateTimeImmutable;
 use Exception;
 use Sonnenglas\MyDHL\Exceptions\TotalPriceNotFoundException;
+use Sonnenglas\MyDHL\Traits\GetRawResponse;
 use Sonnenglas\MyDHL\ValueObjects\Rate;
 
 class RateResponseParser
 {
+    use GetRawResponse;
+
     public const DEFAULT_CURRENCY = 'EUR';
+
+    public function __construct(private array $response)
+    {
+    }
 
     /**
      * Parse the API rates response and return array of available rates
@@ -19,15 +26,15 @@ class RateResponseParser
      * @return Rate[]
      * @throws TotalPriceNotFoundException
      */
-    public function parse(array $response): array
+    public function parse(): array
     {
         $rates = [];
 
-        if (!isset($response['products']) || !is_iterable($response['products'])) {
+        if (!isset($this->response['products']) || !is_iterable($this->response['products'])) {
             return $rates;
         }
 
-        foreach ($response['products'] as $p) {
+        foreach ($this->response['products'] as $p) {
             $rates[] = $this->parseRate($p);
         }
 
