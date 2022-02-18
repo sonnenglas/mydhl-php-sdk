@@ -81,3 +81,8 @@ $rates = $rateService->setAccountNumber('99999999')
     ->getRates();
 
 ```
+
+
+All usage examples:
+- [Check Rate](https://github.com/sonnenglas/mydhl-php-sdk/blob/master/examples/checkRate.php)
+- [Create Shipment](https://github.com/sonnenglas/mydhl-php-sdk/blob/master/examples/createShipment.php)
