@@ -182,7 +182,7 @@ class ShipmentService
         return $this;
     }
 
-    private function prepareQuery(): array
+    public function prepareQuery(): array
     {
         $query = [
             'plannedShippingDateAndTime' => $this->plannedShippingDateAndTime->format(DateTimeImmutable::ATOM),
@@ -204,12 +204,12 @@ class ShipmentService
             'productCode' => $this->productCode,
         ];
 
-        if ($this->localProductCode !== '') {
+        if (isset($this->localProductCode) && $this->localProductCode !== '') {
             $query['localProductCode'] = $this->localProductCode;
         }
 
         if ($this->receiverContact->getEmail() !== '') {
-            $query['shipmentNotification'] = [
+            $query['shipmentNotification'][] = [
                 'typeCode' => 'email',
                 'languageCountryCode' => $this->receiverAddress->getCountryCode(),
                 'receiverId' => $this->receiverContact->getEmail(),

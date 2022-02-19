@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Sonnenglas\MyDHL;
 
 use GuzzleHttp\Client as GuzzleClient;
-use Psr\Http\Message\ResponseInterface;
 use Ramsey\Uuid\Uuid;
+use Sonnenglas\MyDHL\Exceptions\ClientException;
 
 class Client
 {
@@ -39,27 +39,28 @@ class Client
     }
 
     /**
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws ClientException
      */
     public function get(string $uri, array $query): array
     {
         $httpClient = new GuzzleClient();
 
-        $options = $this->getRequestOptions($query);
+        $options = $this->getRequestOptions('GET', $query);
 
         $response = $httpClient->request('GET', $uri, $options);
 
         return json_decode((string) $response->getBody(), true);
     }
 
+
     /**
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws ClientException
      */
     public function post(string $uri, array $query): array
     {
         $httpClient = new GuzzleClient();
 
-        $options = $this->getRequestOptions($query);
+        $options = $this->getRequestOptions('POST', $query);
 
         $response = $httpClient->request('POST', $uri, $options);
 
@@ -74,10 +75,9 @@ class Client
         return $this->lastMessageReference;
     }
 
-    protected function getRequestOptions(array $query): array
+    protected function getRequestOptions(string $queryType, array $query): array
     {
-        return [
-            'query' => $query,
+        $requestOptions = [
             'base_uri' => $this->baseUri,
             'auth' => [$this->username, $this->password],
             'headers' => [
@@ -86,5 +86,13 @@ class Client
 
             ],
         ];
+
+        if ($queryType === "GET") {
+            $requestOptions['query'] = $query;
+        } else {
+            $requestOptions['json'] = $query;
+        }
+
+        return $requestOptions;
     }
 }
