@@ -6,6 +6,7 @@ use Sonnenglas\MyDHL\MyDHL;
 use Sonnenglas\MyDHL\ValueObjects\Account;
 use Sonnenglas\MyDHL\ValueObjects\Address;
 use Sonnenglas\MyDHL\ValueObjects\Contact;
+use Sonnenglas\MyDHL\ValueObjects\CustomerTypeCode;
 use Sonnenglas\MyDHL\ValueObjects\Incoterm;
 use Sonnenglas\MyDHL\ValueObjects\Package;
 
@@ -80,6 +81,9 @@ $isPickupRequested = true;
 $description = 'Shipment description';
 $incoterm = new Incoterm('EXW');
 
+$shipperTypeCode = new CustomerTypeCode('business');
+$receiverTypeCode = new CustomerTypeCode('private');
+
 $shipment = $shipmentService->setPickup($isPickupRequested, '16:00', 'reception')
     ->setPlannedShippingDateAndTime($plannedShippingDateAndTime)
     ->setPickupDetails($pickupAddress, $pickupContact)
@@ -87,6 +91,8 @@ $shipment = $shipmentService->setPickup($isPickupRequested, '16:00', 'reception'
     ->setAccounts($accounts)
     ->setShipperDetails($shipperAddress, $shipperContact)
     ->setReceiverDetails($receiverAddress, $receiverContact)
+    ->setShipperTypeCode($shipperTypeCode)
+    ->setReceiverTypeCode($receiverTypeCode)
     ->setGetRateEstimates(false)
     ->setPackages($packages)
     ->setDescription($description)
