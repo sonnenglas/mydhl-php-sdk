@@ -333,5 +333,13 @@ class ShipmentService
                 throw new MissingArgumentException("Missing argument: {$param}");
             }
         }
+
+        if ($this->receiverContact->getPhone() == '') {
+            throw new MissingArgumentException("Missing phone number for receiver");
+        }
+
+        if ($this->receiverContact->getPhone() == '') {
+            throw new MissingArgumentException("Missing phone number for shipper");
+        }
     }
 }

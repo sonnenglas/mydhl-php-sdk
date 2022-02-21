@@ -66,10 +66,14 @@ class ShipmentServiceTest extends TestCase
             email: 'receiver@test.com',
         );
 
+        $accounts = [];
+
         $accounts[] = new Account(
             typeCode: 'shipper',
             number: '123456789',
         );
+
+        $packages = [];
 
         $packages[] = new Package(
             weight: 5,
