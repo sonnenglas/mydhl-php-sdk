@@ -34,7 +34,7 @@ class Incoterm
 
     private function validate(string $incoterm): void
     {
-        if (!in_array($incoterm, self::ALLOWED_KEYWORDS)) {
+        if (!in_array($incoterm, self::ALLOWED_KEYWORDS, true)) {
             throw new InvalidArgumentException("Wrong Incoterm used. Allowed terms: ". implode(', ', self::ALLOWED_KEYWORDS));
         }
     }

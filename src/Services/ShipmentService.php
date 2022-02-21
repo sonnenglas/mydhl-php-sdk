@@ -10,8 +10,10 @@ use Sonnenglas\MyDHL\Exceptions\MissingArgumentException;
 use Sonnenglas\MyDHL\ResponseParsers\ShipmentResponseParser;
 use Sonnenglas\MyDHL\ValueObjects\Account;
 use Sonnenglas\MyDHL\ValueObjects\Address;
+use Sonnenglas\MyDHL\ValueObjects\BuyerTypeCode;
 use Sonnenglas\MyDHL\ValueObjects\Contact;
 use Sonnenglas\MyDHL\Exceptions\InvalidArgumentException;
+use Sonnenglas\MyDHL\ValueObjects\CustomerTypeCode;
 use Sonnenglas\MyDHL\ValueObjects\Package;
 use Sonnenglas\MyDHL\ValueObjects\Shipment;
 use Sonnenglas\MyDHL\ValueObjects\Incoterm;
@@ -35,6 +37,8 @@ class ShipmentService
     private bool $isCustomsDeclarable = false;
     private string $description;
     private Incoterm $incoterm;
+    private CustomerTypeCode $shipperTypeCode;
+    private CustomerTypeCode $receiverTypeCode;
 
     protected string $unitOfMeasurement = 'metric';
 
@@ -117,6 +121,21 @@ class ShipmentService
 
         return $this;
     }
+
+    public function setShipperTypeCode(CustomerTypeCode $typeCode): ShipmentService
+    {
+        $this->shipperTypeCode = $typeCode;
+
+        return $this;
+    }
+
+    public function setReceiverTypeCode(CustomerTypeCode $typeCode): ShipmentService
+    {
+        $this->receiverTypeCode = $typeCode;
+
+        return $this;
+    }
+
 
     public function setPickupDetails(Address $pickupAddress, Contact $pickupContact): ShipmentService
     {
@@ -232,6 +251,14 @@ class ShipmentService
             'productCode' => $this->productCode,
 
         ];
+
+        if (isset($this->shipperTypeCode)) {
+            $query['customerDetails']['shipperDetails']['typeCode'] = (string) $this->shipperTypeCode;
+        }
+
+        if (isset($this->receiverTypeCode)) {
+            $query['customerDetails']['receiverDetails']['typeCode'] = (string) $this->receiverTypeCode;
+        }
 
         if (isset($this->localProductCode) && $this->localProductCode !== '') {
             $query['localProductCode'] = $this->localProductCode;
