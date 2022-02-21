@@ -10,6 +10,7 @@ use Sonnenglas\MyDHL\Services\ShipmentService;
 use Sonnenglas\MyDHL\ValueObjects\Account;
 use Sonnenglas\MyDHL\ValueObjects\Address;
 use Sonnenglas\MyDHL\ValueObjects\Contact;
+use Sonnenglas\MyDHL\ValueObjects\Incoterm;
 use Sonnenglas\MyDHL\ValueObjects\Package;
 use Tests\TestCase;
 
@@ -81,6 +82,8 @@ class ShipmentServiceTest extends TestCase
         $productCode = 'B';
         $localProductCode = 'C';
         $isPickupRequested = true;
+        $incoterm = new Incoterm("EXW");
+        $description = "Shipment content";
 
         $shipmentService->setPickup($isPickupRequested, '18:00', 'reception')
             ->setPlannedShippingDateAndTime($plannedShippingDateAndTime)
@@ -91,23 +94,26 @@ class ShipmentServiceTest extends TestCase
             ->setShipperDetails($shipperAddress, $shipperContact)
             ->setReceiverDetails($receiverAddress, $receiverContact)
             ->setGetRateEstimates(false)
+            ->setIncoterm($incoterm)
+            ->setDescription($description)
             ->setPackages($packages);
 
         $result = $this->executePrivateMethod($shipmentService, 'prepareQuery', []);
 
-        $this->assertEquals($plannedShippingDateAndTime->format(DateTimeImmutable::ATOM), $result['plannedShippingDateAndTime']);
+        $this->assertEquals($plannedShippingDateAndTime->format('Y-m-d\TH:i:s \G\M\TP'), $result['plannedShippingDateAndTime']);
         $this->assertEquals($accounts[0]->getNumber(), $result['accounts'][0]['number']);
         $this->assertEquals($shipperAddress->getPostalCode(), $result['customerDetails']['shipperDetails']['postalAddress']['postalCode']);
         $this->assertEquals($shipperContact->getEmail(), $result['customerDetails']['shipperDetails']['contactInformation']['email']);
         $this->assertEquals($receiverAddress->getAddressLine1(), $result['customerDetails']['receiverDetails']['postalAddress']['addressLine1']);
         $this->assertEquals($receiverContact->getFullName(), $result['customerDetails']['receiverDetails']['contactInformation']['fullName']);
-        $this->assertEquals($pickupAddress->getAddressLine1(), $result['pickupDetails']['postalAddress']['addressLine1']);
-        $this->assertEquals($pickupContact->getFullName(), $result['pickupDetails']['contactInformation']['fullName']);
+        $this->assertEquals($pickupAddress->getAddressLine1(), $result['pickup']['pickupDetails']['postalAddress']['addressLine1']);
+        $this->assertEquals($pickupContact->getFullName(), $result['pickup']['pickupDetails']['contactInformation']['fullName']);
         $this->assertEquals($packages[0]->getWeight(), $result['content']['packages'][0]['weight']);
         $this->assertEquals($packages[0]->getLength(), $result['content']['packages'][0]['dimensions']['length']);
         $this->assertEquals($productCode, $result['productCode']);
         $this->assertEquals($localProductCode, $result['localProductCode']);
-        $this->assertEquals($receiverContact->getEmail(), $result['shipmentNotification']['receiverId']);
-        $this->assertEquals('true', $result['pickup']['isRequested']);
+        $this->assertEquals($description, $result['content']['description']);
+        $this->assertEquals($receiverContact->getEmail(), $result['shipmentNotification'][0]['receiverId']);
+        $this->assertTrue($result['pickup']['isRequested']);
     }
 }

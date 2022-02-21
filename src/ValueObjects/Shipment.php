@@ -111,7 +111,10 @@ class Shipment
     public function getAsArray(): array
     {
         $values = get_object_vars($this);
-        $values['labelPdf'] = base64_encode($values['labelPdf']);
+
+        // Remove labelPdf since it's duplicate of $values['documents'][0]['content']
+        unset($values['labelPdf']);
+
         return $values;
     }
 }
