@@ -8,14 +8,11 @@ use DateTimeImmutable;
 use Sonnenglas\MyDHL\Client;
 use Sonnenglas\MyDHL\Exceptions\MissingArgumentException;
 use Sonnenglas\MyDHL\ResponseParsers\RateResponseParser;
-use Sonnenglas\MyDHL\Traits\ConvertBoolToString;
 use Sonnenglas\MyDHL\ValueObjects\Package;
 use Sonnenglas\MyDHL\ValueObjects\RateAddress;
 
 class RateService
 {
-    use ConvertBoolToString;
-
     private Package $package;
     private RateAddress $destinationAddress;
     private RateAddress $originAddress;
@@ -134,5 +131,10 @@ class RateService
             'unitOfMeasurement' => $this->unitOfMeasurement,
             'nextBusinessDay' => $this->convertBoolToString($this->nextBusinessDay),
         ];
+    }
+
+    private function convertBoolToString(bool $value): string
+    {
+        return $value ? 'true' : 'false';
     }
 }

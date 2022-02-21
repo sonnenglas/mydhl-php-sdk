@@ -8,18 +8,16 @@ use DateTimeImmutable;
 use Sonnenglas\MyDHL\Client;
 use Sonnenglas\MyDHL\Exceptions\MissingArgumentException;
 use Sonnenglas\MyDHL\ResponseParsers\ShipmentResponseParser;
-use Sonnenglas\MyDHL\Traits\ConvertBoolToString;
 use Sonnenglas\MyDHL\ValueObjects\Account;
 use Sonnenglas\MyDHL\ValueObjects\Address;
 use Sonnenglas\MyDHL\ValueObjects\Contact;
 use Sonnenglas\MyDHL\Exceptions\InvalidArgumentException;
 use Sonnenglas\MyDHL\ValueObjects\Package;
 use Sonnenglas\MyDHL\ValueObjects\Shipment;
+use Sonnenglas\MyDHL\ValueObjects\Incoterm;
 
 class ShipmentService
 {
-    use ConvertBoolToString;
-
     private DateTimeImmutable $plannedShippingDateAndTime;
 
     private bool $isPickupRequested;
@@ -33,7 +31,12 @@ class ShipmentService
     private Contact $shipperContact;
     private Address $receiverAddress;
     private Contact $receiverContact;
-    private bool $getRateEstimates;
+    private bool $getRateEstimates = false;
+    private bool $isCustomsDeclarable = false;
+    private string $description;
+    private Incoterm $incoterm;
+
+    protected string $unitOfMeasurement = 'metric';
 
     /**
      * @var array<Account>
@@ -86,6 +89,13 @@ class ShipmentService
         return $this;
     }
 
+    public function setDescription(string $description): ShipmentService
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
     /**
      * @param bool $isPickupRequested Please advise if a pickup is needed for this shipment
      * @param string $pickupCloseTime The latest time the location premises is available to dispatch the DHL Express shipment. (HH:MM)
@@ -97,6 +107,13 @@ class ShipmentService
         $this->isPickupRequested = $isPickupRequested;
         $this->pickupCloseTime = $pickupCloseTime;
         $this->pickupLocation = $pickupLocation;
+
+        return $this;
+    }
+
+    public function isCustomsDeclarable(bool $isCustomsDeclarable): ShipmentService
+    {
+        $this->isCustomsDeclarable = $isCustomsDeclarable;
 
         return $this;
     }
@@ -182,10 +199,17 @@ class ShipmentService
         return $this;
     }
 
+    public function setIncoterm(Incoterm $incoterm): ShipmentService
+    {
+        $this->incoterm = $incoterm;
+
+        return $this;
+    }
+
     public function prepareQuery(): array
     {
         $query = [
-            'plannedShippingDateAndTime' => $this->plannedShippingDateAndTime->format(DateTimeImmutable::ATOM),
+            'plannedShippingDateAndTime' => $this->plannedShippingDateAndTime->format('Y-m-d\TH:i:s \G\M\TP'),
             'accounts' => $this->prepareAccountsQuery(),
             'customerDetails' => [
                 'shipperDetails' => [
@@ -199,9 +223,14 @@ class ShipmentService
             ],
             'content' => [
                 'packages' => $this->preparePackagesQuery(),
+                'unitOfMeasurement' => $this->unitOfMeasurement,
+                'isCustomsDeclarable' => $this->isCustomsDeclarable,
+                'incoterm' => (string) $this->incoterm,
+                'description' => $this->description,
             ],
-            'getRateEstimates' => $this->convertBoolToString($this->getRateEstimates),
+            'getRateEstimates' => $this->getRateEstimates,
             'productCode' => $this->productCode,
+
         ];
 
         if (isset($this->localProductCode) && $this->localProductCode !== '') {
@@ -218,12 +247,12 @@ class ShipmentService
 
         if ($this->isPickupRequested) {
             $query['pickup'] = [
-                'isRequested' => $this->convertBoolToString($this->isPickupRequested),
+                'isRequested' => $this->isPickupRequested,
                 'closeTime' => $this->pickupCloseTime,
                 'location' => $this->pickupLocation,
             ];
 
-            $query['pickupDetails'] = [
+            $query['pickup']['pickupDetails'] = [
                 'postalAddress' => $this->pickupAddress->getAsArray(),
                 'contactInformation' => $this->pickupContact->getAsArray(),
             ];
@@ -268,6 +297,10 @@ class ShipmentService
      */
     private function validateParams(): void
     {
+        if (!isset($this->incoterm)) {
+            $this->incoterm = new Incoterm('');
+        }
+
         foreach ($this->requiredArguments as $param) {
             if (!isset($this->{$param})) {
                 throw new MissingArgumentException("Missing argument: {$param}");

@@ -9,13 +9,12 @@ use Sonnenglas\MyDHL\Exceptions\InvalidAddressException;
 class Shipment
 {
     public function __construct(
-        private string $url,
         private string $shipmentTrackingNumber,
         private string $cancelPickupUrl,
         private string $trackingUrl,
         private string $dispatchConfirmationNumber,
-        private array $warnings,
         private string $labelPdf,
+        private array $warnings = [],
         private array $packages = [],
         private array $documents = [],
         private array $shipmentDetails = [],
@@ -39,13 +38,6 @@ class Shipment
         return $this->shipmentCharges;
     }
 
-    /**
-     * @return string
-     */
-    public function getUrl(): string
-    {
-        return $this->url;
-    }
 
     /**
      * @return string
@@ -111,13 +103,15 @@ class Shipment
         return $this->shipmentDetails;
     }
 
-    public function getAsJson(): string
+    public function __toString(): string
     {
-        return json_encode($this->getAsArray());
+        return json_encode($this->getAsArray(), JSON_THROW_ON_ERROR);
     }
 
     public function getAsArray(): array
     {
-        return get_object_vars($this);
+        $values = get_object_vars($this);
+        $values['labelPdf'] = base64_encode($values['labelPdf']);
+        return $values;
     }
 }

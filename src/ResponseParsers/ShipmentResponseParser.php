@@ -18,17 +18,16 @@ class ShipmentResponseParser
     public function parse(): Shipment
     {
         return new Shipment(
-            url: $this->response['url'],
             shipmentTrackingNumber: $this->response['shipmentTrackingNumber'],
             cancelPickupUrl: $this->response['cancelPickupUrl'],
             trackingUrl: $this->response['trackingUrl'],
             dispatchConfirmationNumber: $this->response['dispatchConfirmationNumber'],
-            warnings: $this->response['warnings'],
             labelPdf: $this->getLabelPdf($this->response),
-            packages: $this->response['packages'],
-            documents: $this->response['documents'],
-            shipmentDetails: $this->response['shipmentDetails'],
-            shipmentCharges: $this->response['shipmentCharges'],
+            warnings: $this->response['warnings'] ?? [],
+            packages: $this->response['packages'] ?? [],
+            documents: $this->response['documents'] ?? [],
+            shipmentDetails: $this->response['shipmentDetails'] ?? [],
+            shipmentCharges: $this->response['shipmentCharges'] ?? [],
         );
     }
 

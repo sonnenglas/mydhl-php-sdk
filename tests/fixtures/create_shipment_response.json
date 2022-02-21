@@ -1,5 +1,4 @@
 {
-  "url": "https://express.api.dhl.com/mydhlapi/shipments",
   "shipmentTrackingNumber": "123456790",
   "cancelPickupUrl": "https://express.api.dhl.com/mydhlapi/shipment-pickups/PRG200227000256",
   "trackingUrl": "https://express.api.dhl.com/mydhlapi/shipments/1234567890/tracking",

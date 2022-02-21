@@ -19,7 +19,6 @@ class ShipmentResponseParserTest extends TestCase
         /** @var Shipment $shipment */
         $shipment = $shipmentResponseParser->parse();
 
-        $this->assertEquals("https://express.api.dhl.com/mydhlapi/shipments", $shipment->getUrl());
         $this->assertEquals("123456790", $shipment->getShipmentTrackingNumber());
         $this->assertEquals("https://express.api.dhl.com/mydhlapi/shipments/1234567890/tracking", $shipment->getTrackingUrl());
         $this->assertEquals("PRG200227000256", $shipment->getDispatchConfirmationNumber());
