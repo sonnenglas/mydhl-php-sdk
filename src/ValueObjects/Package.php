@@ -7,14 +7,14 @@ namespace Sonnenglas\MyDHL\ValueObjects;
 class Package
 {
     public function __construct(
-        private int $weight,
+        private float $weight,
         private int $height,
         private int $length,
         private int $width,
     ) {
     }
 
-    public function getWeight(): int
+    public function getWeight(): float
     {
         return $this->weight;
     }
