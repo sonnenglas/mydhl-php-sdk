@@ -44,7 +44,7 @@ class Account
         }
 
         if (strlen($this->number) === 0) {
-            throw new InvalidAddressException("Account numebr must not be empty.");
+            throw new InvalidAddressException("Account number must not be empty.");
         }
     }
 }

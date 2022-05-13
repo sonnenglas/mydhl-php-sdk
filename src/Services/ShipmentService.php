@@ -43,12 +43,12 @@ class ShipmentService
     protected string $unitOfMeasurement = 'metric';
 
     /**
-     * @var array<Account>
+     * @var Account[]
      */
     private array $accounts;
 
     /**
-     * @var array<Package>
+     * @var Package[]
      */
     private array $packages;
 
@@ -86,14 +86,14 @@ class ShipmentService
         return $this->lastResponse;
     }
 
-    public function setPlannedShippingDateAndTime(DateTimeImmutable $date): ShipmentService
+    public function setPlannedShippingDateAndTime(DateTimeImmutable $date): self
     {
         $this->plannedShippingDateAndTime = $date;
 
         return $this;
     }
 
-    public function setDescription(string $description): ShipmentService
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 
@@ -106,7 +106,7 @@ class ShipmentService
      * @param string $pickupLocation Provides information on where the package should be picked up by DHL courier
      * @return $this
      */
-    public function setPickup(bool $isPickupRequested, string $pickupCloseTime = '', string $pickupLocation = ''): ShipmentService
+    public function setPickup(bool $isPickupRequested, string $pickupCloseTime = '', string $pickupLocation = ''): self
     {
         $this->isPickupRequested = $isPickupRequested;
         $this->pickupCloseTime = $pickupCloseTime;
@@ -115,21 +115,21 @@ class ShipmentService
         return $this;
     }
 
-    public function isCustomsDeclarable(bool $isCustomsDeclarable): ShipmentService
+    public function isCustomsDeclarable(bool $isCustomsDeclarable): self
     {
         $this->isCustomsDeclarable = $isCustomsDeclarable;
 
         return $this;
     }
 
-    public function setShipperTypeCode(CustomerTypeCode $typeCode): ShipmentService
+    public function setShipperTypeCode(CustomerTypeCode $typeCode): self
     {
         $this->shipperTypeCode = $typeCode;
 
         return $this;
     }
 
-    public function setReceiverTypeCode(CustomerTypeCode $typeCode): ShipmentService
+    public function setReceiverTypeCode(CustomerTypeCode $typeCode): self
     {
         $this->receiverTypeCode = $typeCode;
 
@@ -137,7 +137,7 @@ class ShipmentService
     }
 
 
-    public function setPickupDetails(Address $pickupAddress, Contact $pickupContact): ShipmentService
+    public function setPickupDetails(Address $pickupAddress, Contact $pickupContact): self
     {
         $this->pickupAddress = $pickupAddress;
         $this->pickupContact = $pickupContact;
@@ -145,14 +145,14 @@ class ShipmentService
         return $this;
     }
 
-    public function setProductCode(string $productCode): ShipmentService
+    public function setProductCode(string $productCode): self
     {
         $this->productCode = $productCode;
 
         return $this;
     }
 
-    public function setLocalProductCode(string $localProductCode): ShipmentService
+    public function setLocalProductCode(string $localProductCode): self
     {
         $this->localProductCode = $localProductCode;
 
@@ -160,11 +160,11 @@ class ShipmentService
     }
 
     /**
-     * @param array<Account> $accounts
+     * @param Account[] $accounts
      * @return $this
      * @throws InvalidArgumentException
      */
-    public function setAccounts(array $accounts): ShipmentService
+    public function setAccounts(array $accounts): self
     {
         foreach ($accounts as $account) {
             if (!$account instanceof Account) {
@@ -177,7 +177,7 @@ class ShipmentService
         return $this;
     }
 
-    public function setShipperDetails(Address $shipperAddress, Contact $shipperContact): ShipmentService
+    public function setShipperDetails(Address $shipperAddress, Contact $shipperContact): self
     {
         $this->shipperAddress = $shipperAddress;
         $this->shipperContact = $shipperContact;
@@ -185,7 +185,7 @@ class ShipmentService
         return $this;
     }
 
-    public function setReceiverDetails(Address $receiverAddress, Contact $receiverContact): ShipmentService
+    public function setReceiverDetails(Address $receiverAddress, Contact $receiverContact): self
     {
         $this->receiverAddress = $receiverAddress;
         $this->receiverContact = $receiverContact;
@@ -193,7 +193,7 @@ class ShipmentService
         return $this;
     }
 
-    public function setGetRateEstimates(bool $getRateEstimates): ShipmentService
+    public function setGetRateEstimates(bool $getRateEstimates): self
     {
         $this->getRateEstimates = $getRateEstimates;
 
@@ -205,7 +205,7 @@ class ShipmentService
      * @return $this
      * @throws InvalidArgumentException
      */
-    public function setPackages(array $packages): ShipmentService
+    public function setPackages(array $packages): self
     {
         foreach ($packages as $package) {
             if (!$package instanceof Package) {
@@ -218,7 +218,7 @@ class ShipmentService
         return $this;
     }
 
-    public function setIncoterm(Incoterm $incoterm): ShipmentService
+    public function setIncoterm(Incoterm $incoterm): self
     {
         $this->incoterm = $incoterm;
 

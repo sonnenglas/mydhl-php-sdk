@@ -9,6 +9,7 @@ use Sonnenglas\MyDHL\Client;
 use Sonnenglas\MyDHL\Exceptions\MissingArgumentException;
 use Sonnenglas\MyDHL\ResponseParsers\RateResponseParser;
 use Sonnenglas\MyDHL\ValueObjects\Package;
+use Sonnenglas\MyDHL\ValueObjects\Rate;
 use Sonnenglas\MyDHL\ValueObjects\RateAddress;
 
 class RateService
@@ -40,6 +41,12 @@ class RateService
     {
     }
 
+    /**
+     * @return Rate[]
+     * @throws MissingArgumentException
+     * @throws \Sonnenglas\MyDHL\Exceptions\ClientException
+     * @throws \Sonnenglas\MyDHL\Exceptions\TotalPriceNotFoundException
+     */
     public function getRates(): array
     {
         $this->validateParams();
@@ -53,42 +60,42 @@ class RateService
         return $this->lastResponse;
     }
 
-    public function setAccountNumber(string $accountNumber): RateService
+    public function setAccountNumber(string $accountNumber): self
     {
         $this->accountNumber = $accountNumber;
 
         return $this;
     }
 
-    public function setOriginAddress(RateAddress $address): RateService
+    public function setOriginAddress(RateAddress $address): self
     {
         $this->originAddress = $address;
 
         return $this;
     }
 
-    public function setDestinationAddress(RateAddress $address): RateService
+    public function setDestinationAddress(RateAddress $address): self
     {
         $this->destinationAddress = $address;
 
         return $this;
     }
 
-    public function setPackage(Package $package): RateService
+    public function setPackage(Package $package): self
     {
         $this->package = $package;
 
         return $this;
     }
 
-    public function setPlannedShippingDate(DateTimeImmutable $date): RateService
+    public function setPlannedShippingDate(DateTimeImmutable $date): self
     {
         $this->shippingDate = $date;
 
         return $this;
     }
 
-    public function setCustomsDeclarable(bool $isCustomsDeclarable): RateService
+    public function setCustomsDeclarable(bool $isCustomsDeclarable): self
     {
         $this->isCustomsDeclarable = $isCustomsDeclarable;
 
@@ -96,13 +103,17 @@ class RateService
     }
 
 
-    public function setNextBusinessDay(bool $nextBusinessDay): RateService
+    public function setNextBusinessDay(bool $nextBusinessDay): self
     {
         $this->nextBusinessDay = $nextBusinessDay;
 
         return $this;
     }
 
+    /**
+     * @return void
+     * @throws MissingArgumentException
+     */
     private function validateParams(): void
     {
         foreach ($this->requiredArguments as $param) {
