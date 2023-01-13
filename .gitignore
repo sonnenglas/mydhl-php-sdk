@@ -1,7 +1,6 @@
 .idea
 .php_cs.cache
 .vscode/
-composer.lock
 vendor/
 .php-cs-fixer.cache
 test2.php
