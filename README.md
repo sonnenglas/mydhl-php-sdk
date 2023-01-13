@@ -11,29 +11,29 @@ __Note:__ It supports only the latest REST API provided by DHL. No SOAP API supp
 Service      | Supported
 -------------|------------
 __RATING__   |
-Retrieve Rates for a one piece Shipment     | ![YES](https://via.placeholder.com/40/00c000/000000?text=YES)
-Retrieve Rates for Multi-piece Shipments    | ![NO](https://via.placeholder.com/40/c0000/000000?text=NO)
-Landed Cost                                 | ![NO](https://via.placeholder.com/40/c0000/000000?text=NO)
+Retrieve Rates for a one piece Shipment     | ✅
+Retrieve Rates for Multi-piece Shipments    | ❌
+Landed Cost                                 | ❌
 __PRODUCT__  |
-Retrieve DHL Express products               | ![NO](https://via.placeholder.com/40/c0000/000000?text=NO)
+Retrieve DHL Express products               | ❌
 __SHIPMENT__ |
-Electronic Proof of Delivery                | ![NO](https://via.placeholder.com/40/c0000/000000?text=NO)
-Upload updated customs docs for shipment    | ![NO](https://via.placeholder.com/40/c0000/000000?text=NO)
-Create Shipment                             | ![NO](https://via.placeholder.com/40/00c00/000000?text=YES)
-Upload Commercial Invoice Data for shipment | ![NO](https://via.placeholder.com/40/c0000/000000?text=NO)
+Electronic Proof of Delivery                | ❌
+Upload updated customs docs for shipment    | ❌
+Create Shipment                             | ✅
+Upload Commercial Invoice Data for shipment | ❌
 __TRACKING__ |
-Track a single DHL Express Shipment             | ![NO](https://via.placeholder.com/40/c0000/000000?text=NO)
-Tracka single or multiple DHL Express Shipments | ![NO](https://via.placeholder.com/40/c0000/000000?text=NO)
+Track a single DHL Express Shipment             | ❌
+Tracka single or multiple DHL Express Shipments | ❌
 __PICKUP__ |
-Cancel a DHL Express pickup booking request     | ![NO](https://via.placeholder.com/40/c0000/000000?text=NO)
-Update pickup information for existing pickup booking req | ![NO](https://via.placeholder.com/40/c0000/000000?text=NO)
-Create a DHL Express pickup booking request | ![NO](https://via.placeholder.com/40/c0000/000000?text=NO)
+Cancel a DHL Express pickup booking request     | ❌
+Update pickup information for existing pickup booking req | ❌
+Create a DHL Express pickup booking request | ❌
 __IDENTIFIER__ | 
-Service to allocate identifiers upfront ... | ![NO](https://via.placeholder.com/40/c0000/000000?text=NO)
+Service to allocate identifiers upfront ... | ❌
 __ADDRESS__ | 
-Validate DHL Express pickup/delivery capability | ![NO](https://via.placeholder.com/40/c0000/000000?text=NO)
+Validate DHL Express pickup/delivery capability | ❌
 __INVOICE__ |
-Upload Commercial Invoice data | ![NO](https://via.placeholder.com/40/c0000/000000?text=NO)
+Upload Commercial Invoice data | ❌
 # Usage:
 
 ```diff```
