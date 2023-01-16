@@ -7,8 +7,10 @@ use Sonnenglas\MyDHL\ValueObjects\Account;
 use Sonnenglas\MyDHL\ValueObjects\Address;
 use Sonnenglas\MyDHL\ValueObjects\Contact;
 use Sonnenglas\MyDHL\ValueObjects\CustomerTypeCode;
+use Sonnenglas\MyDHL\ValueObjects\DangerousGood;
 use Sonnenglas\MyDHL\ValueObjects\Incoterm;
 use Sonnenglas\MyDHL\ValueObjects\Package;
+use Sonnenglas\MyDHL\ValueObjects\ValueAddedService;
 
 $testMode = true;
 
@@ -84,6 +86,15 @@ $incoterm = new Incoterm('EXW');
 $shipperTypeCode = new CustomerTypeCode('business');
 $receiverTypeCode = new CustomerTypeCode('private');
 
+$valueAddedService = new ValueAddedService(
+    serviceCode: 'HD',
+    dangerousGood: new DangerousGood(
+        contentId: '966',
+        customDescription: 'Lithium ion batteries in compliance with Section II of PI 966 - 1 package',
+    ),
+);
+
+
 $shipment = $shipmentService->setPickup($isPickupRequested, '16:00', 'reception')
     ->setPlannedShippingDateAndTime($plannedShippingDateAndTime)
     ->setPickupDetails($pickupAddress, $pickupContact)
@@ -97,6 +108,7 @@ $shipment = $shipmentService->setPickup($isPickupRequested, '16:00', 'reception'
     ->setPackages($packages)
     ->setDescription($description)
     ->setIncoterm($incoterm)
+    ->setValueAddedServices([$valueAddedService])
     ->createShipment();
 
 print_r($shipment);

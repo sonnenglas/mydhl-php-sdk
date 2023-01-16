@@ -8,32 +8,33 @@ __Note:__ It supports only the latest REST API provided by DHL. No SOAP API supp
 
 # Supported services:
 
-Service      | Supported
--------------|------------
-__RATING__   |
-Retrieve Rates for a one piece Shipment     | ✅
-Retrieve Rates for Multi-piece Shipments    | ❌
-Landed Cost                                 | ❌
-__PRODUCT__  |
-Retrieve DHL Express products               | ❌
-__SHIPMENT__ |
-Electronic Proof of Delivery                | ❌
-Upload updated customs docs for shipment    | ❌
-Create Shipment                             | ✅
-Upload Commercial Invoice Data for shipment | ❌
-__TRACKING__ |
-Track a single DHL Express Shipment             | ❌
-Tracka single or multiple DHL Express Shipments | ❌
-__PICKUP__ |
-Cancel a DHL Express pickup booking request     | ❌
-Update pickup information for existing pickup booking req | ❌
-Create a DHL Express pickup booking request | ❌
-__IDENTIFIER__ | 
-Service to allocate identifiers upfront ... | ❌
-__ADDRESS__ | 
-Validate DHL Express pickup/delivery capability | ❌
-__INVOICE__ |
-Upload Commercial Invoice data | ❌
+| Service                                                     | Supported |
+|-------------------------------------------------------------|-----------|
+| __RATING__                                                  |           |
+| Retrieve Rates for a one piece Shipment                     | ✅         |
+| Retrieve Rates for Multi-piece Shipments                    | ❌         |
+| Landed Cost                                                 | ❌         |
+| __PRODUCT__                                                 |           |
+| Retrieve DHL Express products                               | ❌         |
+| __SHIPMENT__                                                |           |
+| Electronic Proof of Delivery                                | ❌         |
+| Upload updated customs docs for shipment                    | ❌         |
+| Create Shipment                                             | ✅         |
+| Upload Commercial Invoice Data for shipment                 | ❌         |
+| __TRACKING__                                                |           |
+| Track a single DHL Express Shipment                         | ❌         |
+| Tracka single or multiple DHL Express Shipments             | ❌         |
+| __PICKUP__                                                  |           |
+| Cancel a DHL Express pickup booking request                 | ❌         |
+| Update pickup information for existing pickup booking req   | ❌         |
+| Create a DHL Express pickup booking request                 | ❌         |
+| __IDENTIFIER__                                              |           |
+| Service to allocate identifiers upfront ...                 | ❌         |
+| __ADDRESS__                                                 |           |
+| Validate DHL Express pickup/delivery capability             | ❌         |
+| __INVOICE__                                                 |           |
+| Upload Commercial Invoice data                              | ❌         |
+
 # Usage:
 
 ```diff```

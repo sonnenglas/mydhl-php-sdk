@@ -17,6 +17,7 @@ use Sonnenglas\MyDHL\ValueObjects\CustomerTypeCode;
 use Sonnenglas\MyDHL\ValueObjects\Package;
 use Sonnenglas\MyDHL\ValueObjects\Shipment;
 use Sonnenglas\MyDHL\ValueObjects\Incoterm;
+use Sonnenglas\MyDHL\ValueObjects\ValueAddedService;
 
 class ShipmentService
 {
@@ -39,6 +40,8 @@ class ShipmentService
     private Incoterm $incoterm;
     private CustomerTypeCode $shipperTypeCode;
     private CustomerTypeCode $receiverTypeCode;
+    /** @var ValueAddedService[] */
+    private array $valueAddedServices = [];
 
     protected string $unitOfMeasurement = 'metric';
 
@@ -225,6 +228,19 @@ class ShipmentService
         return $this;
     }
 
+    public function setValueAddedServices(array $valueAddedServices): self
+    {
+        foreach ($valueAddedServices as $valueAddedService) {
+            if (!$valueAddedService instanceof ValueAddedService) {
+                throw new InvalidArgumentException("Array should contain values of type ValueAddedService");
+            }
+        }
+
+        $this->valueAddedServices = $valueAddedServices;
+
+        return $this;
+    }
+
     public function prepareQuery(): array
     {
         $query = [
@@ -283,6 +299,14 @@ class ShipmentService
                 'postalAddress' => $this->pickupAddress->getAsArray(),
                 'contactInformation' => $this->pickupContact->getAsArray(),
             ];
+        }
+
+        if (count($this->valueAddedServices)) {
+            $query['valueAddedServices'] = [];
+
+            foreach ($this->valueAddedServices as $valueAddedService) {
+                $query['valueAddedServices'][] = $valueAddedService->getAsArray();
+            }
         }
 
         return $query;
