@@ -6,14 +6,12 @@ namespace Sonnenglas\MyDHL\ValueObjects;
 
 class ValueAddedService
 {
-
     public function __construct(
         private string $serviceCode,
         private ?DangerousGood $dangerousGood = null,
         private int $value = 0,
         private string $currency = '',
         private string $method = '',
-
     ) {
     }
 
@@ -41,5 +39,4 @@ class ValueAddedService
 
         return $result;
     }
-
 }

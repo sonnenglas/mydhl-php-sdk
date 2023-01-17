@@ -6,7 +6,6 @@ namespace Sonnenglas\MyDHL\ValueObjects;
 
 class DangerousGood
 {
-
     public function __construct(
         private string $contentId,
         private string $customDescription = '',
@@ -36,5 +35,4 @@ class DangerousGood
 
         return $result;
     }
-
 }
