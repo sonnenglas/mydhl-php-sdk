@@ -17,6 +17,9 @@ final class ShipmentRequest
      * @param list<Account> $accounts
      * @param list<Package> $packages
      * @param list<ValueAddedService> $valueAddedServices
+     * @param list<RegistrationNumber> $shipperRegistrationNumbers
+     * @param list<RegistrationNumber> $receiverRegistrationNumbers
+     * @param list<CustomerReference> $customerReferences
      */
     public function __construct(
         public readonly DateTimeImmutable $plannedShippingDateAndTime,
@@ -37,10 +40,20 @@ final class ShipmentRequest
         public readonly ?CustomerTypeCode $receiverTypeCode = null,
         public readonly array $valueAddedServices = [],
         public readonly string $unitOfMeasurement = self::UNIT_METRIC,
+        public readonly array $shipperRegistrationNumbers = [],
+        public readonly array $receiverRegistrationNumbers = [],
+        public readonly array $customerReferences = [],
+        public readonly ?ExportDeclaration $exportDeclaration = null,
+        public readonly ?float $declaredValue = null,
+        public readonly ?string $declaredValueCurrency = null,
+        public readonly ?OutputImageProperties $outputImageProperties = null,
     ) {
         $this->assertItemsOfType($this->accounts, Account::class, 'accounts');
         $this->assertItemsOfType($this->packages, Package::class, 'packages');
         $this->assertItemsOfType($this->valueAddedServices, ValueAddedService::class, 'valueAddedServices');
+        $this->assertItemsOfType($this->shipperRegistrationNumbers, RegistrationNumber::class, 'shipperRegistrationNumbers');
+        $this->assertItemsOfType($this->receiverRegistrationNumbers, RegistrationNumber::class, 'receiverRegistrationNumbers');
+        $this->assertItemsOfType($this->customerReferences, CustomerReference::class, 'customerReferences');
 
         if ($this->productCode === '') {
             throw new MissingArgumentException('Missing argument: productCode');
@@ -66,6 +79,18 @@ final class ShipmentRequest
             throw new MissingArgumentException('Incoterm is required when isCustomsDeclarable is true.');
         }
 
+        if ($this->isCustomsDeclarable && $this->declaredValue === null) {
+            throw new MissingArgumentException('declaredValue is required when isCustomsDeclarable is true.');
+        }
+
+        if ($this->isCustomsDeclarable && $this->declaredValueCurrency === null) {
+            throw new MissingArgumentException('declaredValueCurrency is required when isCustomsDeclarable is true.');
+        }
+
+        if (($this->declaredValue === null) !== ($this->declaredValueCurrency === null)) {
+            throw new InvalidArgumentException('declaredValue and declaredValueCurrency must be set together.');
+        }
+
         if (
             $this->unitOfMeasurement !== self::UNIT_METRIC
             && $this->unitOfMeasurement !== self::UNIT_IMPERIAL
@@ -85,14 +110,18 @@ final class ShipmentRequest
             'plannedShippingDateAndTime' => $this->plannedShippingDateAndTime->format('Y-m-d\TH:i:s \G\M\TP'),
             'accounts' => array_map(static fn (Account $a): array => $a->getAsArray(), $this->accounts),
             'customerDetails' => [
-                'shipperDetails' => [
-                    'postalAddress' => $this->shipperAddress->getAsArray(),
-                    'contactInformation' => $this->shipperContact->getAsArray(),
-                ],
-                'receiverDetails' => [
-                    'postalAddress' => $this->receiverAddress->getAsArray(),
-                    'contactInformation' => $this->receiverContact->getAsArray(),
-                ],
+                'shipperDetails' => $this->customerSection(
+                    $this->shipperAddress,
+                    $this->shipperContact,
+                    $this->shipperTypeCode,
+                    $this->shipperRegistrationNumbers,
+                ),
+                'receiverDetails' => $this->customerSection(
+                    $this->receiverAddress,
+                    $this->receiverContact,
+                    $this->receiverTypeCode,
+                    $this->receiverRegistrationNumbers,
+                ),
             ],
             'content' => array_filter([
                 'packages' => array_map(
@@ -110,19 +139,14 @@ final class ShipmentRequest
                 'isCustomsDeclarable' => $this->isCustomsDeclarable,
                 'incoterm' => $this->incoterm !== null ? (string) $this->incoterm : null,
                 'description' => $this->description,
+                'declaredValue' => $this->declaredValue,
+                'declaredValueCurrency' => $this->declaredValueCurrency,
+                'exportDeclaration' => $this->exportDeclaration?->toArray(),
             ], static fn (mixed $v): bool => $v !== null),
             'getRateEstimates' => $this->getRateEstimates,
             'productCode' => $this->productCode,
             'pickup' => $this->pickup->toQuery(),
         ];
-
-        if ($this->shipperTypeCode !== null) {
-            $query['customerDetails']['shipperDetails']['typeCode'] = (string) $this->shipperTypeCode;
-        }
-
-        if ($this->receiverTypeCode !== null) {
-            $query['customerDetails']['receiverDetails']['typeCode'] = (string) $this->receiverTypeCode;
-        }
 
         if ($this->localProductCode !== '') {
             $query['localProductCode'] = $this->localProductCode;
@@ -143,7 +167,50 @@ final class ShipmentRequest
             );
         }
 
+        if ($this->customerReferences !== []) {
+            $query['customerReferences'] = array_map(
+                static fn (CustomerReference $r): array => $r->toArray(),
+                $this->customerReferences,
+            );
+        }
+
+        if ($this->outputImageProperties !== null) {
+            $imageProps = $this->outputImageProperties->toArray();
+            if ($imageProps !== []) {
+                $query['outputImageProperties'] = $imageProps;
+            }
+        }
+
         return $query;
+    }
+
+    /**
+     * @param list<RegistrationNumber> $registrationNumbers
+     * @return array<string, mixed>
+     */
+    private function customerSection(
+        Address $address,
+        Contact $contact,
+        ?CustomerTypeCode $typeCode,
+        array $registrationNumbers,
+    ): array {
+        $section = [
+            'postalAddress' => $address->getAsArray(),
+            'contactInformation' => $contact->getAsArray(),
+        ];
+
+        if ($typeCode !== null) {
+            $section['typeCode'] = (string) $typeCode;
+        }
+
+        if ($registrationNumbers !== []) {
+            $section['registrationNumbers'] = array_map(
+                static fn (RegistrationNumber $r): array => $r->toArray(),
+                $registrationNumbers,
+            );
+        }
+
+        return $section;
     }
 
     /**
