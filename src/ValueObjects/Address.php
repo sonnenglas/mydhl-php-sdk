@@ -19,7 +19,7 @@ class Address
         protected string $addressLine2 = '',
         protected string $addressLine3 = '',
         protected string $countyName = '',
-        protected string $provinceCode = ''
+        protected string $provinceCode = '',
     ) {
         $this->countryCode = strtoupper($this->countryCode);
 
@@ -81,6 +81,9 @@ class Address
         return $this->cityName;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getAsArray(): array
     {
         $result = [
@@ -119,11 +122,11 @@ class Address
         }
 
         if (strlen($this->addressLine1) === 0) {
-            throw new InvalidAddressException("Address Line1 must not be empty.");
+            throw new InvalidAddressException('Address Line1 must not be empty.');
         }
 
         if (strlen($this->cityName) === 0) {
-            throw new InvalidAddressException("City name must not be empty.");
+            throw new InvalidAddressException('City name must not be empty.');
         }
     }
 }

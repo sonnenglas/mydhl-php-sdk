@@ -5,22 +5,19 @@ declare(strict_types=1);
 namespace Tests\Services;
 
 use DateTimeImmutable;
-use Sonnenglas\MyDHL\Client;
-use Sonnenglas\MyDHL\Services\ShipmentService;
 use Sonnenglas\MyDHL\ValueObjects\Account;
 use Sonnenglas\MyDHL\ValueObjects\Address;
 use Sonnenglas\MyDHL\ValueObjects\Contact;
 use Sonnenglas\MyDHL\ValueObjects\Incoterm;
 use Sonnenglas\MyDHL\ValueObjects\Package;
+use Sonnenglas\MyDHL\ValueObjects\Pickup;
+use Sonnenglas\MyDHL\ValueObjects\ShipmentRequest;
 use Tests\TestCase;
 
-class ShipmentServiceTest extends TestCase
+final class ShipmentServiceTest extends TestCase
 {
-    public function testPrepareQuery(): void
+    public function testRequestToQuery(): void
     {
-        $client = new Client('fakeUser', 'fakePass', true);
-        $shipmentService = new ShipmentService($client);
-
         $pickupAddress = new Address(
             addressLine1: 'Karl-Liebknecht-Straße 14',
             countryCode: 'DE',
@@ -66,58 +63,88 @@ class ShipmentServiceTest extends TestCase
             email: 'receiver@test.com',
         );
 
-        $accounts = [];
-
-        $accounts[] = new Account(
-            typeCode: 'shipper',
-            number: '123456789',
-        );
-
-        $packages = [];
-
-        $packages[] = new Package(
-            weight: 5,
-            height: 50,
-            length: 10,
-            width: 20,
-        );
-
+        $accounts = [new Account(typeCode: 'shipper', number: '123456789')];
+        $packages = [new Package(weight: 5, height: 50, length: 10, width: 20)];
         $plannedShippingDateAndTime = new DateTimeImmutable('tomorrow');
         $productCode = 'B';
         $localProductCode = 'C';
-        $isPickupRequested = true;
-        $incoterm = new Incoterm("EXW");
-        $description = "Shipment content";
+        $description = 'Shipment content';
 
-        $shipmentService->setPickup($isPickupRequested, '18:00', 'reception')
-            ->setPlannedShippingDateAndTime($plannedShippingDateAndTime)
-            ->setPickupDetails($pickupAddress, $pickupContact)
-            ->setProductCode($productCode)
-            ->setLocalProductCode($localProductCode)
-            ->setAccounts($accounts)
-            ->setShipperDetails($shipperAddress, $shipperContact)
-            ->setReceiverDetails($receiverAddress, $receiverContact)
-            ->setGetRateEstimates(false)
-            ->setIncoterm($incoterm)
-            ->setDescription($description)
-            ->setPackages($packages);
+        $request = new ShipmentRequest(
+            plannedShippingDateAndTime: $plannedShippingDateAndTime,
+            productCode: $productCode,
+            shipperAddress: $shipperAddress,
+            shipperContact: $shipperContact,
+            receiverAddress: $receiverAddress,
+            receiverContact: $receiverContact,
+            accounts: $accounts,
+            packages: $packages,
+            pickup: new Pickup(
+                isRequested: true,
+                closeTime: '18:00',
+                location: 'reception',
+                address: $pickupAddress,
+                contact: $pickupContact,
+            ),
+            description: $description,
+            localProductCode: $localProductCode,
+            getRateEstimates: false,
+            incoterm: new Incoterm('EXW'),
+        );
 
-        $result = $this->executePrivateMethod($shipmentService, 'prepareQuery', []);
+        $result = $request->toQuery();
 
-        $this->assertEquals($plannedShippingDateAndTime->format('Y-m-d\TH:i:s \G\M\TP'), $result['plannedShippingDateAndTime']);
-        $this->assertEquals($accounts[0]->getNumber(), $result['accounts'][0]['number']);
-        $this->assertEquals($shipperAddress->getPostalCode(), $result['customerDetails']['shipperDetails']['postalAddress']['postalCode']);
-        $this->assertEquals($shipperContact->getEmail(), $result['customerDetails']['shipperDetails']['contactInformation']['email']);
-        $this->assertEquals($receiverAddress->getAddressLine1(), $result['customerDetails']['receiverDetails']['postalAddress']['addressLine1']);
-        $this->assertEquals($receiverContact->getFullName(), $result['customerDetails']['receiverDetails']['contactInformation']['fullName']);
-        $this->assertEquals($pickupAddress->getAddressLine1(), $result['pickup']['pickupDetails']['postalAddress']['addressLine1']);
-        $this->assertEquals($pickupContact->getFullName(), $result['pickup']['pickupDetails']['contactInformation']['fullName']);
-        $this->assertEquals($packages[0]->getWeight(), $result['content']['packages'][0]['weight']);
-        $this->assertEquals($packages[0]->getLength(), $result['content']['packages'][0]['dimensions']['length']);
-        $this->assertEquals($productCode, $result['productCode']);
-        $this->assertEquals($localProductCode, $result['localProductCode']);
-        $this->assertEquals($description, $result['content']['description']);
-        $this->assertEquals($receiverContact->getEmail(), $result['shipmentNotification'][0]['receiverId']);
-        $this->assertTrue($result['pickup']['isRequested']);
+        self::assertSame(
+            $plannedShippingDateAndTime->format('Y-m-d\TH:i:s \G\M\TP'),
+            $result['plannedShippingDateAndTime'],
+        );
+
+        /** @var list<array{number: string}> $accountsResult */
+        $accountsResult = $result['accounts'];
+        self::assertSame($accounts[0]->getNumber(), $accountsResult[0]['number']);
+
+        /** @var array{shipperDetails: array{postalAddress: array<string, string>, contactInformation: array<string, string>}, receiverDetails: array{postalAddress: array<string, string>, contactInformation: array<string, string>}} $customerDetails */
+        $customerDetails = $result['customerDetails'];
+        self::assertSame(
+            $shipperAddress->getPostalCode(),
+            $customerDetails['shipperDetails']['postalAddress']['postalCode'],
+        );
+        self::assertSame(
+            $shipperContact->getEmail(),
+            $customerDetails['shipperDetails']['contactInformation']['email'],
+        );
+        self::assertSame(
+            $receiverAddress->getAddressLine1(),
+            $customerDetails['receiverDetails']['postalAddress']['addressLine1'],
+        );
+        self::assertSame(
+            $receiverContact->getFullName(),
+            $customerDetails['receiverDetails']['contactInformation']['fullName'],
+        );
+
+        /** @var array{isRequested: bool, pickupDetails: array{postalAddress: array<string, string>, contactInformation: array<string, string>}} $pickupResult */
+        $pickupResult = $result['pickup'];
+        self::assertTrue($pickupResult['isRequested']);
+        self::assertSame(
+            $pickupAddress->getAddressLine1(),
+            $pickupResult['pickupDetails']['postalAddress']['addressLine1'],
+        );
+        self::assertSame(
+            $pickupContact->getFullName(),
+            $pickupResult['pickupDetails']['contactInformation']['fullName'],
+        );
+
+        /** @var array{packages: list<array{weight: float|int, dimensions: array{length: float|int, width: float|int, height: float|int}}>, description: string} $content */
+        $content = $result['content'];
+        self::assertSame($packages[0]->getWeight(), $content['packages'][0]['weight']);
+        self::assertSame($packages[0]->getLength(), $content['packages'][0]['dimensions']['length']);
+        self::assertSame($description, $content['description']);
+
+        self::assertSame($productCode, $result['productCode']);
+        self::assertSame($localProductCode, $result['localProductCode']);
+
+        /** @var list<array{receiverId: string}> $shipmentNotification */
+        $shipmentNotification = $result['shipmentNotification'];
+        self::assertSame($receiverContact->getEmail(), $shipmentNotification[0]['receiverId']);
     }
 }

@@ -15,25 +15,26 @@ class ValueAddedService
     ) {
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getAsArray(): array
     {
-        $result = [];
+        $result = ['serviceCode' => $this->serviceCode];
 
-        $result['serviceCode'] = $this->serviceCode;
-
-        if ($this->dangerousGood) {
-            $result['dangerousGoods'][] = $this->dangerousGood->getAsArray();
+        if ($this->dangerousGood !== null) {
+            $result['dangerousGoods'] = [$this->dangerousGood->getAsArray()];
         }
 
-        if ($this->value) {
+        if ($this->value !== 0) {
             $result['value'] = $this->value;
         }
 
-        if ($this->currency) {
+        if ($this->currency !== '') {
             $result['currency'] = $this->currency;
         }
 
-        if ($this->method) {
+        if ($this->method !== '') {
             $result['method'] = $this->method;
         }
 

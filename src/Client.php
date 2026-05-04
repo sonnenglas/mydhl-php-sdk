@@ -23,7 +23,7 @@ class Client
     public function __construct(
         protected string $username,
         protected string $password,
-        protected bool $testMode
+        protected bool $testMode,
     ) {
         $this->baseUri = $this->testMode ? self::URI_TEST : self::URI_PRODUCTION;
     }
@@ -39,34 +39,42 @@ class Client
     }
 
     /**
+     * @param array<string, mixed> $query
+     * @return array<string, mixed>
      * @throws ClientException
      */
     public function get(string $uri, array $query): array
     {
-        $httpClient = new GuzzleClient();
-
-        $options = $this->getRequestOptions('GET', $query);
-
-        $response = $httpClient->request('GET', $uri, $options);
-
-        return json_decode((string) $response->getBody(), true);
+        return $this->request('GET', $uri, $query);
     }
 
-
     /**
+     * @param array<string, mixed> $query
+     * @return array<string, mixed>
      * @throws ClientException
      */
     public function post(string $uri, array $query): array
     {
-        $httpClient = new GuzzleClient();
-
-        $options = $this->getRequestOptions('POST', $query);
-
-        $response = $httpClient->request('POST', $uri, $options);
-
-        return json_decode((string) $response->getBody(), true);
+        return $this->request('POST', $uri, $query);
     }
 
+    /**
+     * @param array<string, mixed> $query
+     * @return array<string, mixed>
+     * @throws ClientException
+     */
+    private function request(string $method, string $uri, array $query): array
+    {
+        $httpClient = new GuzzleClient();
+        $options = $this->getRequestOptions($method, $query);
+
+        $response = $httpClient->request($method, $uri, $options);
+
+        /** @var array<string, mixed> $decoded */
+        $decoded = json_decode((string) $response->getBody(), true, flags: JSON_THROW_ON_ERROR);
+
+        return $decoded;
+    }
 
     protected function generateMessageReference(): string
     {
@@ -75,6 +83,10 @@ class Client
         return $this->lastMessageReference;
     }
 
+    /**
+     * @param array<string, mixed> $query
+     * @return array<string, mixed>
+     */
     protected function getRequestOptions(string $queryType, array $query): array
     {
         $requestOptions = [
@@ -83,11 +95,10 @@ class Client
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Message-Reference' => $this->generateMessageReference(),
-
             ],
         ];
 
-        if ($queryType === "GET") {
+        if ($queryType === 'GET') {
             $requestOptions['query'] = $query;
         } else {
             $requestOptions['json'] = $query;

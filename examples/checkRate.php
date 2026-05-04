@@ -3,14 +3,11 @@
 declare(strict_types=1);
 
 use Sonnenglas\MyDHL\MyDHL;
-use Sonnenglas\MyDHL\ValueObjects\RateAddress;
 use Sonnenglas\MyDHL\ValueObjects\Package;
+use Sonnenglas\MyDHL\ValueObjects\RateAddress;
+use Sonnenglas\MyDHL\ValueObjects\RateRequest;
 
-$testMode = true;
-
-$myDhl = new MyDHL('username', 'password', $testMode);
-
-$rateService = $myDhl->getRateService();
+$myDhl = new MyDHL('username', 'password', testMode: true);
 
 $originAddress = new RateAddress(
     countryCode: 'DE',
@@ -28,18 +25,19 @@ $package = new Package(
     weight: 10, // kg
     height: 20, // cm
     length: 10, // cm
-    width: 30, // cm
+    width: 30,  // cm
 );
 
-$shippingDate = new DateTimeImmutable('now');
+$request = new RateRequest(
+    accountNumber: '99999999',
+    originAddress: $originAddress,
+    destinationAddress: $destinationAddress,
+    package: $package,
+    shippingDate: new DateTimeImmutable('now'),
+    isCustomsDeclarable: false,
+    nextBusinessDay: false,
+);
 
-$rates = $rateService->setAccountNumber('99999999')
-    ->setOriginAddress($originAddress)
-    ->setDestinationAddress($destinationAddress)
-    ->setPlannedShippingDate($shippingDate)
-    ->setPackage($package)
-    ->setNextBusinessDay(false)
-    ->setCustomsDeclarable(false)
-    ->getRates();
+$rates = $myDhl->getRateService()->getRates($request);
 
 print_r($rates);

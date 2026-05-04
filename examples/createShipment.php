@@ -10,13 +10,11 @@ use Sonnenglas\MyDHL\ValueObjects\CustomerTypeCode;
 use Sonnenglas\MyDHL\ValueObjects\DangerousGood;
 use Sonnenglas\MyDHL\ValueObjects\Incoterm;
 use Sonnenglas\MyDHL\ValueObjects\Package;
+use Sonnenglas\MyDHL\ValueObjects\Pickup;
+use Sonnenglas\MyDHL\ValueObjects\ShipmentRequest;
 use Sonnenglas\MyDHL\ValueObjects\ValueAddedService;
 
-$testMode = true;
-
-$myDhl = new MyDHL('username', 'password', $testMode);
-
-$shipmentService = $myDhl->getShipmentService();
+$myDhl = new MyDHL('username', 'password', testMode: true);
 
 $pickupAddress = new Address(
     addressLine1: 'Karl-Liebknecht-Straße 14',
@@ -63,29 +61,6 @@ $receiverContact = new Contact(
     email: 'receiver@test.com',
 );
 
-$accounts = [];
-$accounts[] = new Account(
-    typeCode: 'shipper',
-    number: '123456789',
-);
-
-$packages = [];
-$packages[] = new Package(
-    weight: 5,
-    height: 50,
-    length: 10,
-    width: 20,
-);
-
-$plannedShippingDateAndTime = new DateTimeImmutable('tomorrow');
-$productCode = 'U';
-$isPickupRequested = true;
-$description = 'Shipment description';
-$incoterm = new Incoterm('EXW');
-
-$shipperTypeCode = new CustomerTypeCode('business');
-$receiverTypeCode = new CustomerTypeCode('private');
-
 $valueAddedService = new ValueAddedService(
     serviceCode: 'HD',
     dangerousGood: new DangerousGood(
@@ -94,21 +69,30 @@ $valueAddedService = new ValueAddedService(
     ),
 );
 
+$request = new ShipmentRequest(
+    plannedShippingDateAndTime: new DateTimeImmutable('tomorrow'),
+    productCode: 'U',
+    shipperAddress: $shipperAddress,
+    shipperContact: $shipperContact,
+    receiverAddress: $receiverAddress,
+    receiverContact: $receiverContact,
+    accounts: [new Account(typeCode: 'shipper', number: '123456789')],
+    packages: [new Package(weight: 5, height: 50, length: 10, width: 20)],
+    pickup: new Pickup(
+        isRequested: true,
+        closeTime: '16:00',
+        location: 'reception',
+        address: $pickupAddress,
+        contact: $pickupContact,
+    ),
+    description: 'Shipment description',
+    getRateEstimates: false,
+    incoterm: new Incoterm('EXW'),
+    shipperTypeCode: new CustomerTypeCode('business'),
+    receiverTypeCode: new CustomerTypeCode('private'),
+    valueAddedServices: [$valueAddedService],
+);
 
-$shipment = $shipmentService->setPickup($isPickupRequested, '16:00', 'reception')
-    ->setPlannedShippingDateAndTime($plannedShippingDateAndTime)
-    ->setPickupDetails($pickupAddress, $pickupContact)
-    ->setProductCode($productCode)
-    ->setAccounts($accounts)
-    ->setShipperDetails($shipperAddress, $shipperContact)
-    ->setReceiverDetails($receiverAddress, $receiverContact)
-    ->setShipperTypeCode($shipperTypeCode)
-    ->setReceiverTypeCode($receiverTypeCode)
-    ->setGetRateEstimates(false)
-    ->setPackages($packages)
-    ->setDescription($description)
-    ->setIncoterm($incoterm)
-    ->setValueAddedServices([$valueAddedService])
-    ->createShipment();
+$shipment = $myDhl->getShipmentService()->createShipment($request);
 
 print_r($shipment);
