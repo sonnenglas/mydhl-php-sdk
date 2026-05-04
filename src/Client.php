@@ -10,10 +10,9 @@ use Sonnenglas\MyDHL\Exceptions\ClientException;
 
 class Client
 {
+    public const API_VERSION = '3.2.0';
+
     protected const URI_PRODUCTION = 'https://express.api.dhl.com/mydhlapi/';
-
-    protected const URI_MOCK = 'https://api-mock.dhl.com/mydhlapi/';
-
     protected const URI_TEST = 'https://express.api.dhl.com/mydhlapi/test/';
 
     protected string $baseUri;
@@ -26,11 +25,6 @@ class Client
         protected bool $testMode,
     ) {
         $this->baseUri = $this->testMode ? self::URI_TEST : self::URI_PRODUCTION;
-    }
-
-    public function enableMockServer(): void
-    {
-        $this->baseUri = self::URI_MOCK;
     }
 
     public function getBaseUri(): string
@@ -63,6 +57,26 @@ class Client
      * @return array<string, mixed>
      * @throws ClientException
      */
+    public function delete(string $uri, array $query = []): array
+    {
+        return $this->request('DELETE', $uri, $query);
+    }
+
+    /**
+     * @param array<string, mixed> $query
+     * @return array<string, mixed>
+     * @throws ClientException
+     */
+    public function patch(string $uri, array $query): array
+    {
+        return $this->request('PATCH', $uri, $query);
+    }
+
+    /**
+     * @param array<string, mixed> $query
+     * @return array<string, mixed>
+     * @throws ClientException
+     */
     private function request(string $method, string $uri, array $query): array
     {
         $httpClient = new GuzzleClient();
@@ -70,8 +84,13 @@ class Client
 
         $response = $httpClient->request($method, $uri, $options);
 
+        $body = (string) $response->getBody();
+        if ($body === '') {
+            return [];
+        }
+
         /** @var array<string, mixed> $decoded */
-        $decoded = json_decode((string) $response->getBody(), true, flags: JSON_THROW_ON_ERROR);
+        $decoded = json_decode($body, true, flags: JSON_THROW_ON_ERROR);
 
         return $decoded;
     }
@@ -87,7 +106,7 @@ class Client
      * @param array<string, mixed> $query
      * @return array<string, mixed>
      */
-    protected function getRequestOptions(string $queryType, array $query): array
+    protected function getRequestOptions(string $method, array $query): array
     {
         $requestOptions = [
             'base_uri' => $this->baseUri,
@@ -95,12 +114,14 @@ class Client
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Message-Reference' => $this->generateMessageReference(),
+                'Message-Reference-Date' => gmdate('D, d M Y H:i:s \G\M\T'),
+                'x-version' => self::API_VERSION,
             ],
         ];
 
-        if ($queryType === 'GET') {
+        if ($method === 'GET' || $method === 'DELETE') {
             $requestOptions['query'] = $query;
-        } else {
+        } elseif ($query !== []) {
             $requestOptions['json'] = $query;
         }
 

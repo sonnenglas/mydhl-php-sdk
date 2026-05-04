@@ -26,12 +26,12 @@ final class Pickup
     }
 
     /**
-     * @return array<string, mixed>|null
+     * @return array<string, mixed>
      */
-    public function toQuery(): ?array
+    public function toQuery(): array
     {
         if (!$this->isRequested || $this->address === null || $this->contact === null) {
-            return null;
+            return ['isRequested' => false];
         }
 
         return [

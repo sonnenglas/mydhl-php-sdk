@@ -22,16 +22,21 @@ final class ShipmentResponseParser
 
         return new Shipment(
             shipmentTrackingNumber: Cast::string($this->response['shipmentTrackingNumber']),
-            cancelPickupUrl: Cast::string($this->response['cancelPickupUrl']),
-            trackingUrl: Cast::string($this->response['trackingUrl']),
-            dispatchConfirmationNumber: Cast::string($this->response['dispatchConfirmationNumber']),
             labelPdf: $this->extractLabelPdf($documents),
+            dispatchConfirmationNumber: self::optionalString($this->response['dispatchConfirmationNumber'] ?? null),
+            cancelPickupUrl: self::optionalString($this->response['cancelPickupUrl'] ?? null),
+            trackingUrl: self::optionalString($this->response['trackingUrl'] ?? null),
             warnings: self::asList($this->response['warnings'] ?? []),
             packages: self::asListOfArrays($this->response['packages'] ?? []),
             documents: $documents,
             shipmentDetails: self::asListOfArrays($this->response['shipmentDetails'] ?? []),
             shipmentCharges: self::asListOfArrays($this->response['shipmentCharges'] ?? []),
         );
+    }
+
+    private static function optionalString(mixed $value): ?string
+    {
+        return $value === null ? null : Cast::string($value);
     }
 
     /**

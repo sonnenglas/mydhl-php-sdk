@@ -15,10 +15,10 @@ class Shipment
      */
     public function __construct(
         private string $shipmentTrackingNumber,
-        private string $cancelPickupUrl,
-        private string $trackingUrl,
-        private string $dispatchConfirmationNumber,
         private string $labelPdf,
+        private ?string $dispatchConfirmationNumber = null,
+        private ?string $cancelPickupUrl = null,
+        private ?string $trackingUrl = null,
         private array $warnings = [],
         private array $packages = [],
         private array $documents = [],
@@ -45,17 +45,17 @@ class Shipment
         return $this->shipmentTrackingNumber;
     }
 
-    public function getCancelPickupUrl(): string
+    public function getCancelPickupUrl(): ?string
     {
         return $this->cancelPickupUrl;
     }
 
-    public function getTrackingUrl(): string
+    public function getTrackingUrl(): ?string
     {
         return $this->trackingUrl;
     }
 
-    public function getDispatchConfirmationNumber(): string
+    public function getDispatchConfirmationNumber(): ?string
     {
         return $this->dispatchConfirmationNumber;
     }
