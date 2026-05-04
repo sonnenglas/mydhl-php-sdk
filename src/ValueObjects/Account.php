@@ -9,9 +9,9 @@ use Sonnenglas\MyDHL\Exceptions\InvalidAddressException;
 class Account
 {
     private const ALLOWED_TYPE_CODES = [
-        "shipper",
-        "payer",
-        "duties-taxes",
+        'shipper',
+        'payer',
+        'duties-taxes',
     ];
 
     public function __construct(
@@ -26,6 +26,9 @@ class Account
         return $this->number;
     }
 
+    /**
+     * @return array{typeCode: string, number: string}
+     */
     public function getAsArray(): array
     {
         return [
@@ -37,14 +40,14 @@ class Account
     protected function validateData(): void
     {
         if (!in_array($this->typeCode, self::ALLOWED_TYPE_CODES, true)) {
-            $errMsg = "Incorrect account type code. Allowed codes: ";
+            $errMsg = 'Incorrect account type code. Allowed codes: ';
             $errMsg .= implode(', ', self::ALLOWED_TYPE_CODES);
 
             throw new InvalidAddressException($errMsg);
         }
 
         if (strlen($this->number) === 0) {
-            throw new InvalidAddressException("Account number must not be empty.");
+            throw new InvalidAddressException('Account number must not be empty.');
         }
     }
 }

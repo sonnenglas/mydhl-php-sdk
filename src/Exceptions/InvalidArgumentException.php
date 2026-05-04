@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Sonnenglas\MyDHL\Exceptions;
 
-class InvalidArgumentException extends \Exception
+use Exception;
+
+class InvalidArgumentException extends Exception
 {
 }

@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace Sonnenglas\MyDHL\ValueObjects;
 
-use Sonnenglas\MyDHL\Exceptions\InvalidAddressException;
-
 class Shipment
 {
+    /**
+     * @param list<mixed> $warnings
+     * @param list<array<string, mixed>> $packages
+     * @param list<array<string, mixed>> $documents
+     * @param list<array<string, mixed>> $shipmentDetails
+     * @param list<array<string, mixed>> $shipmentCharges
+     */
     public function __construct(
         private string $shipmentTrackingNumber,
         private string $cancelPickupUrl,
@@ -22,57 +27,41 @@ class Shipment
     ) {
     }
 
-    /**
-     * @return string
-     */
     public function getLabelPdf(): string
     {
         return $this->labelPdf;
     }
 
     /**
-     * @return array
+     * @return list<array<string, mixed>>
      */
     public function getShipmentCharges(): array
     {
         return $this->shipmentCharges;
     }
 
-
-    /**
-     * @return string
-     */
     public function getShipmentTrackingNumber(): string
     {
         return $this->shipmentTrackingNumber;
     }
 
-    /**
-     * @return string
-     */
     public function getCancelPickupUrl(): string
     {
         return $this->cancelPickupUrl;
     }
 
-    /**
-     * @return string
-     */
     public function getTrackingUrl(): string
     {
         return $this->trackingUrl;
     }
 
-    /**
-     * @return string
-     */
     public function getDispatchConfirmationNumber(): string
     {
         return $this->dispatchConfirmationNumber;
     }
 
     /**
-     * @return array
+     * @return list<mixed>
      */
     public function getWarnings(): array
     {
@@ -80,7 +69,7 @@ class Shipment
     }
 
     /**
-     * @return array
+     * @return list<array<string, mixed>>
      */
     public function getPackages(): array
     {
@@ -88,7 +77,7 @@ class Shipment
     }
 
     /**
-     * @return array
+     * @return list<array<string, mixed>>
      */
     public function getDocuments(): array
     {
@@ -96,7 +85,7 @@ class Shipment
     }
 
     /**
-     * @return array
+     * @return list<array<string, mixed>>
      */
     public function getShipmentDetails(): array
     {
@@ -108,11 +97,14 @@ class Shipment
         return json_encode($this->getAsArray(), JSON_THROW_ON_ERROR);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getAsArray(): array
     {
         $values = get_object_vars($this);
 
-        // Remove labelPdf since it's duplicate of $values['documents'][0]['content']
+        // Skip the binary label — it duplicates $values['documents'][0]['content'].
         unset($values['labelPdf']);
 
         return $values;

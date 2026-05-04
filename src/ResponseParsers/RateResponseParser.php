@@ -7,23 +7,24 @@ namespace Sonnenglas\MyDHL\ResponseParsers;
 use DateTimeImmutable;
 use Exception;
 use Sonnenglas\MyDHL\Exceptions\TotalPriceNotFoundException;
-use Sonnenglas\MyDHL\Traits\GetRawResponse;
+use Sonnenglas\MyDHL\Internal\Cast;
 use Sonnenglas\MyDHL\ValueObjects\Rate;
 
-class RateResponseParser
+final class RateResponseParser
 {
-    use GetRawResponse;
-
     public const DEFAULT_CURRENCY = 'EUR';
 
-    public function __construct(private array $response)
+    /**
+     * @param array<string, mixed> $response
+     */
+    public function __construct(private readonly array $response)
     {
     }
 
     /**
-     * Parse the API rates response and return array of available rates
-     * @param array $response
-     * @return Rate[]
+     * Parses the API rates response and returns the available rates.
+     *
+     * @return list<Rate>
      * @throws TotalPriceNotFoundException
      */
     public function parse(): array
@@ -34,57 +35,67 @@ class RateResponseParser
             return $rates;
         }
 
-        foreach ($this->response['products'] as $p) {
-            $rates[] = $this->parseRate($p);
+        foreach ($this->response['products'] as $product) {
+            if (!is_array($product)) {
+                continue;
+            }
+            /** @var array<string, mixed> $product */
+            $rates[] = $this->parseRate($product);
         }
 
         return $rates;
     }
 
     /**
-     * @param array $rate
-     * @return Rate
+     * @param array<string, mixed> $rate
      * @throws TotalPriceNotFoundException|Exception
      */
-    protected function parseRate(array $rate): Rate
+    private function parseRate(array $rate): Rate
     {
-        [$totalPrice, $currency] = $this->parseTotalPrice($rate['totalPrice']);
+        /** @var list<array<string, mixed>> $prices */
+        $prices = $rate['totalPrice'];
+        [$totalPrice, $currency] = $this->parseTotalPrice($prices);
 
-        $estimatedDeliveryDateAndTime = new DateTimeImmutable($rate['deliveryCapabilities']['estimatedDeliveryDateAndTime']);
+        /** @var array{estimatedDeliveryDateAndTime: mixed} $delivery */
+        $delivery = $rate['deliveryCapabilities'];
+        $estimatedDeliveryDateAndTime = new DateTimeImmutable(Cast::string($delivery['estimatedDeliveryDateAndTime']));
 
-        $pricingDate = new DateTimeImmutable($rate['pricingDate']);
+        $pricingDate = new DateTimeImmutable(Cast::string($rate['pricingDate']));
+
+        /** @var array{volumetric: mixed, provided: mixed} $weight */
+        $weight = $rate['weight'];
 
         return new Rate(
-            productName: (string) $rate['productName'],
-            productCode: (string) $rate['productCode'],
-            localProductCode: (string) $rate['localProductCode'],
-            localProductCountryCode: (string) $rate['localProductCountryCode'],
-            isCustomerAgreement: (bool) $rate['isCustomerAgreement'],
-            weightVolumetric: (float) $rate['weight']['volumetric'],
-            weightProvided: (float) $rate['weight']['provided'],
-            totalPrice: (float) $totalPrice,
-            currency: (string) $currency,
+            productName: Cast::string($rate['productName']),
+            productCode: Cast::string($rate['productCode']),
+            localProductCode: Cast::string($rate['localProductCode']),
+            localProductCountryCode: Cast::string($rate['localProductCountryCode']),
+            isCustomerAgreement: Cast::bool($rate['isCustomerAgreement']),
+            weightVolumetric: Cast::float($weight['volumetric']),
+            weightProvided: Cast::float($weight['provided']),
+            totalPrice: $totalPrice,
+            currency: $currency,
             estimatedDeliveryDateAndTime: $estimatedDeliveryDateAndTime,
             pricingDate: $pricingDate,
         );
     }
 
     /**
-     * @param array $prices
-     * @return array
+     * @param list<array<string, mixed>> $prices
+     * @return array{0: float, 1: string}
      * @throws TotalPriceNotFoundException
      */
-    protected function parseTotalPrice(array $prices): array
+    private function parseTotalPrice(array $prices): array
     {
         foreach ($prices as $p) {
             if ($p['currencyType'] === 'BILLC') {
-                $price = (float) $p['price'];
+                $price = Cast::float($p['price']);
 
-                if (!isset($p['priceCurrency']) && $price == 0.00) {
-                    return [0, self::DEFAULT_CURRENCY];
+                if (!isset($p['priceCurrency']) && $price === 0.0) {
+                    return [0.0, self::DEFAULT_CURRENCY];
                 }
 
-                return [$price, (string) $p['priceCurrency']];
+                return [$price, Cast::string($p['priceCurrency'])];
             }
         }
 

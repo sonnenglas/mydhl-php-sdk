@@ -14,7 +14,7 @@ class MyDHL
     public function __construct(
         string $username,
         string $password,
-        bool $testMode = false
+        bool $testMode = false,
     ) {
         $this->client = new Client($username, $password, $testMode);
     }

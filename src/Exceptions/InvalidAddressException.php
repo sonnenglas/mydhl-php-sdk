@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Sonnenglas\MyDHL\Exceptions;
 
-class InvalidAddressException extends \Exception
+use Exception;
+
+class InvalidAddressException extends Exception
 {
 }

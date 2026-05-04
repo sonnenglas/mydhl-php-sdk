@@ -6,76 +6,71 @@ namespace Tests\ResponseParsers;
 
 use DateTimeImmutable;
 use Sonnenglas\MyDHL\ResponseParsers\RateResponseParser;
-use Sonnenglas\MyDHL\ValueObjects\Rate;
 use Tests\TestCase;
 
-class RateResponseParserTest extends TestCase
+final class RateResponseParserTest extends TestCase
 {
     public function testParseTotalPrice(): void
     {
         $rateResponseParser = new RateResponseParser([]);
 
-        $expectedResult = [16.64, "EUR"];
+        $expectedResult = [16.64, 'EUR'];
 
-        /** @var Rate $rate */
-        $rate = json_decode(file_get_contents(__DIR__ . "/../fixtures/rate.json"), true);
+        $rate = self::loadJsonFixture('fixtures/rate.json');
 
+        /** @var list<array<string, mixed>> $totalPrices */
         $totalPrices = $rate['totalPrice'];
 
         $result = $this->executePrivateMethod($rateResponseParser, 'parseTotalPrice', [$totalPrices]);
 
-        $this->assertEquals($expectedResult, $result);
+        self::assertSame($expectedResult, $result);
     }
 
     public function testParseRate(): void
     {
         $rateResponseParser = new RateResponseParser([]);
 
-        $fakeRate = json_decode(file_get_contents(__DIR__ . "/../fixtures/rate.json"), true);
+        $fakeRate = self::loadJsonFixture('fixtures/rate.json');
 
-        /** @var Rate $rate */
         $rate = $this->executePrivateMethod($rateResponseParser, 'parseRate', [$fakeRate]);
 
-        $this->assertTrue($rate instanceof Rate);
-
-        $expectedEstimatedDeliveryDate =  new DateTimeImmutable('2021-01-19T12:00:00');
-
+        $expectedEstimatedDeliveryDate = new DateTimeImmutable('2021-01-19T12:00:00');
         $expectedPricingDate = new DateTimeImmutable('2022-01-14 00:00:00');
 
-        $this->assertEquals("EXPRESS DOMESTIC 12:00", $rate->getProductName());
-        $this->assertEquals("1", $rate->getProductCode());
-        $this->assertEquals("L", $rate->getLocalProductCode());
-        $this->assertEquals("DE", $rate->getLocalProductCountryCode());
-        $this->assertEquals(false, $rate->getIsCustomerAgreement());
-        $this->assertEquals(3.6, $rate->getWeightVolumetric());
-        $this->assertEquals(4, $rate->getWeightProvided());
-        $this->assertEquals(16.64, $rate->getTotalPrice());
-        $this->assertEquals("EUR", $rate->getCurrency());
-        $this->assertEquals($expectedEstimatedDeliveryDate, $rate->getEstimatedDeliveryDateAndTime());
-        $this->assertEquals($expectedPricingDate, $rate->getPricingDate());
+        self::assertInstanceOf(\Sonnenglas\MyDHL\ValueObjects\Rate::class, $rate);
+        self::assertSame('EXPRESS DOMESTIC 12:00', $rate->getProductName());
+        self::assertSame('1', $rate->getProductCode());
+        self::assertSame('L', $rate->getLocalProductCode());
+        self::assertSame('DE', $rate->getLocalProductCountryCode());
+        self::assertFalse($rate->getIsCustomerAgreement());
+        self::assertSame(3.6, $rate->getWeightVolumetric());
+        self::assertSame(4.0, $rate->getWeightProvided());
+        self::assertSame(16.64, $rate->getTotalPrice());
+        self::assertSame('EUR', $rate->getCurrency());
+        self::assertEquals($expectedEstimatedDeliveryDate, $rate->getEstimatedDeliveryDateAndTime());
+        self::assertEquals($expectedPricingDate, $rate->getPricingDate());
     }
 
     public function testParse(): void
     {
         $expectedProductNames = [
-            "EXPRESS DOMESTIC 9:00",
-            "EXPRESS DOMESTIC 10:00",
-            "EXPRESS DOMESTIC 12:00",
-            "MEDICAL EXPRESS DOMESTIC",
-            "EXPRESS EASY DOC",
+            'EXPRESS DOMESTIC 9:00',
+            'EXPRESS DOMESTIC 10:00',
+            'EXPRESS DOMESTIC 12:00',
+            'MEDICAL EXPRESS DOMESTIC',
+            'EXPRESS EASY DOC',
         ];
 
-        $fakeResponse = file_get_contents(__DIR__ . "/../fixtures/get_rates.json");
-        $fakeResponse = json_decode($fakeResponse, true);
+        $fakeResponse = self::loadJsonFixture('fixtures/get_rates.json');
 
         $rateResponseParser = new RateResponseParser($fakeResponse);
 
         $rates = $rateResponseParser->parse();
 
-        $this->assertCount(5, $rates);
+        self::assertCount(5, $rates);
 
         foreach ($rates as $rate) {
-            $this->assertTrue(in_array($rate->getProductName(), $expectedProductNames, true));
+            self::assertContains($rate->getProductName(), $expectedProductNames);
         }
     }
 }

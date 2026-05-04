@@ -14,22 +14,22 @@ class DangerousGood
     ) {
     }
 
-
+    /**
+     * @return array<string, string|int>
+     */
     public function getAsArray(): array
     {
-        $result = [];
+        $result = ['contentId' => $this->contentId];
 
-        $result['contentId'] = $this->contentId;
-
-        if ($this->customDescription) {
+        if ($this->customDescription !== '') {
             $result['customDescription'] = $this->customDescription;
         }
 
-        if ($this->unCode) {
+        if ($this->unCode !== '') {
             $result['unCode'] = $this->unCode;
         }
 
-        if ($this->dryIceTotalNetWeight) {
+        if ($this->dryIceTotalNetWeight !== 0) {
             $result['dryIceTotalNetWeight'] = $this->dryIceTotalNetWeight;
         }
 

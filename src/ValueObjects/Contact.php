@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Sonnenglas\MyDHL\ValueObjects;
 
-use Sonnenglas\MyDHL\Exceptions\InvalidAddressException;
-
 class Contact
 {
     public function __construct(
@@ -54,6 +52,9 @@ class Contact
         return $this->email;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getAsArray(): array
     {
         $result = [

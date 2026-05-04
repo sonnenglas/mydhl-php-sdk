@@ -9,12 +9,12 @@ use Sonnenglas\MyDHL\Exceptions\InvalidArgumentException;
 class CustomerTypeCode
 {
     private const ALLOWED_KEYWORDS = [
-        "business",
-        "direct_consumer",
-        "government",
-        "other",
-        "private",
-        "reseller",
+        'business',
+        'direct_consumer',
+        'government',
+        'other',
+        'private',
+        'reseller',
     ];
 
     /**
@@ -30,7 +30,7 @@ class CustomerTypeCode
     private function validate(string $typeCode): void
     {
         if (!in_array($typeCode, self::ALLOWED_KEYWORDS, true)) {
-            throw new InvalidArgumentException("Wrong customer type code used. Allowed terms: ". implode(', ', self::ALLOWED_KEYWORDS));
+            throw new InvalidArgumentException('Wrong customer type code used. Allowed terms: '. implode(', ', self::ALLOWED_KEYWORDS));
         }
     }
 
