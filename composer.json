@@ -47,7 +47,10 @@
       "php ./vendor/bin/phpstan"
     ],
     "test": [
-      "sh scripts/tests.sh"
+      "php ./vendor/bin/phpunit"
+    ],
+    "test:integration": [
+      "php ./vendor/bin/phpunit -c phpunit.integration.xml"
     ]
   },
   "config": {

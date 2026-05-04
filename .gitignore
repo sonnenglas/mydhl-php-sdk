@@ -8,4 +8,5 @@ test2.php
 .env.*
 !.env.example
 tests/Integration/.env*
+!tests/Integration/.env.example
 .phpunit.result.cache
