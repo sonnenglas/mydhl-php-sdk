@@ -32,7 +32,7 @@ abstract class IntegrationTestCase extends TestCase
         if ($username === null || $password === null || $account === null) {
             self::markTestSkipped(
                 'DHL Express sandbox credentials not configured. '
-                . 'Set DHL_EXPRESS_USERNAME / DHL_EXPRESS_PASSWORD / DHL_EXPRESS_ACCOUNT_NUMBER to run.'
+                . 'Set DHL_EXPRESS_USERNAME / DHL_EXPRESS_PASSWORD / DHL_EXPRESS_ACCOUNT_NUMBER to run.',
             );
         }
 

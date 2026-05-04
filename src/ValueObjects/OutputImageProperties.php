@@ -37,7 +37,7 @@ final class OutputImageProperties
 
         if ($this->encodingFormat !== null && !in_array($this->encodingFormat, self::ALLOWED_ENCODING, true)) {
             throw new InvalidArgumentException(
-                'encodingFormat must be one of: ' . implode(', ', self::ALLOWED_ENCODING) . '.'
+                'encodingFormat must be one of: ' . implode(', ', self::ALLOWED_ENCODING) . '.',
             );
         }
 
