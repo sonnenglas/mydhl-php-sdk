@@ -62,6 +62,10 @@ final class ShipmentRequest
             throw new MissingArgumentException('Missing phone number for receiver');
         }
 
+        if ($this->isCustomsDeclarable && $this->incoterm === null) {
+            throw new MissingArgumentException('Incoterm is required when isCustomsDeclarable is true.');
+        }
+
         if (
             $this->unitOfMeasurement !== self::UNIT_METRIC
             && $this->unitOfMeasurement !== self::UNIT_IMPERIAL
@@ -90,7 +94,7 @@ final class ShipmentRequest
                     'contactInformation' => $this->receiverContact->getAsArray(),
                 ],
             ],
-            'content' => [
+            'content' => array_filter([
                 'packages' => array_map(
                     static fn (Package $p): array => [
                         'weight' => $p->getWeight(),
@@ -104,11 +108,12 @@ final class ShipmentRequest
                 ),
                 'unitOfMeasurement' => $this->unitOfMeasurement,
                 'isCustomsDeclarable' => $this->isCustomsDeclarable,
-                'incoterm' => (string) ($this->incoterm ?? ''),
+                'incoterm' => $this->incoterm !== null ? (string) $this->incoterm : null,
                 'description' => $this->description,
-            ],
+            ], static fn (mixed $v): bool => $v !== null),
             'getRateEstimates' => $this->getRateEstimates,
             'productCode' => $this->productCode,
+            'pickup' => $this->pickup->toQuery(),
         ];
 
         if ($this->shipperTypeCode !== null) {
@@ -129,11 +134,6 @@ final class ShipmentRequest
                 'languageCountryCode' => $this->receiverAddress->getCountryCode(),
                 'receiverId' => $this->receiverContact->getEmail(),
             ]];
-        }
-
-        $pickupQuery = $this->pickup->toQuery();
-        if ($pickupQuery !== null) {
-            $query['pickup'] = $pickupQuery;
         }
 
         if ($this->valueAddedServices !== []) {

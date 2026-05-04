@@ -4,14 +4,25 @@ declare(strict_types=1);
 
 namespace Sonnenglas\MyDHL\ValueObjects;
 
-class Package
+use Sonnenglas\MyDHL\Exceptions\InvalidArgumentException;
+
+final class Package
 {
     public function __construct(
-        private float $weight,
-        private int $height,
-        private int $length,
-        private int $width,
+        public readonly float $weight,
+        public readonly float $height,
+        public readonly float $length,
+        public readonly float $width,
     ) {
+        if ($weight <= 0.0) {
+            throw new InvalidArgumentException('Package weight must be greater than zero.');
+        }
+
+        foreach (['height' => $height, 'length' => $length, 'width' => $width] as $name => $value) {
+            if ($value <= 0.0) {
+                throw new InvalidArgumentException("Package {$name} must be greater than zero.");
+            }
+        }
     }
 
     public function getWeight(): float
@@ -19,17 +30,17 @@ class Package
         return $this->weight;
     }
 
-    public function getHeight(): int
+    public function getHeight(): float
     {
         return $this->height;
     }
 
-    public function getLength(): int
+    public function getLength(): float
     {
         return $this->length;
     }
 
-    public function getWidth(): int
+    public function getWidth(): float
     {
         return $this->width;
     }
