@@ -14,7 +14,7 @@ use Sonnenglas\MyDHL\ValueObjects\DhlDocument;
  * `GET /shipments/{trackingNumber}/proof-of-delivery` — download the signed POD
  * once a shipment has been delivered.
  */
-final class ProofOfDeliveryService
+class ProofOfDeliveryService
 {
     public const CONTENT_DETAIL = 'epod-detail';
     public const CONTENT_SUMMARY = 'epod-summary';

@@ -11,7 +11,7 @@ use Sonnenglas\MyDHL\ResponseParsers\PickupResponseParser;
 use Sonnenglas\MyDHL\ValueObjects\PickupBooking;
 use Sonnenglas\MyDHL\ValueObjects\PickupRequest;
 
-final class PickupService
+class PickupService
 {
     private const PICKUPS_URL = 'pickups';
 
