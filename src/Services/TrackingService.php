@@ -10,7 +10,7 @@ use Sonnenglas\MyDHL\Exceptions\InvalidArgumentException;
 use Sonnenglas\MyDHL\ResponseParsers\TrackingResponseParser;
 use Sonnenglas\MyDHL\ValueObjects\TrackedShipment;
 
-final class TrackingService
+class TrackingService
 {
     public const VIEW_ALL_CHECKPOINTS = 'all-checkpoints';
     public const VIEW_LAST_CHECKPOINT = 'last-checkpoint';

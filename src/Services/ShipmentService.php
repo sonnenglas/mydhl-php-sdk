@@ -10,7 +10,7 @@ use Sonnenglas\MyDHL\ResponseParsers\ShipmentResponseParser;
 use Sonnenglas\MyDHL\ValueObjects\Shipment;
 use Sonnenglas\MyDHL\ValueObjects\ShipmentRequest;
 
-final class ShipmentService
+class ShipmentService
 {
     private const CREATE_SHIPMENT_URL = 'shipments';
 

@@ -11,7 +11,7 @@ use Sonnenglas\MyDHL\ResponseParsers\RateResponseParser;
 use Sonnenglas\MyDHL\ValueObjects\Rate;
 use Sonnenglas\MyDHL\ValueObjects\RateRequest;
 
-final class RateService
+class RateService
 {
     private const RETRIEVE_RATES_ONE_PIECE_URL = 'rates';
 

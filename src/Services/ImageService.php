@@ -18,7 +18,7 @@ use Sonnenglas\MyDHL\ValueObjects\DhlDocument;
  * Note: this endpoint does NOT return the transport label. Labels are only
  * returned inline at shipment creation time (`ShipmentService::createShipment`).
  */
-final class ImageService
+class ImageService
 {
     public const TYPE_WAYBILL = 'waybill';
     public const TYPE_COMMERCIAL_INVOICE = 'commercial-invoice';
