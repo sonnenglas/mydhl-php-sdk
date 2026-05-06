@@ -51,6 +51,23 @@ final class RateResponseParserTest extends TestCase
         self::assertEquals($expectedPricingDate, $rate->getPricingDate());
     }
 
+    public function testParseRateFallsBackToVolumetricWhenProvidedMissing(): void
+    {
+        $rateResponseParser = new RateResponseParser([]);
+
+        $fakeRate = self::loadJsonFixture('fixtures/rate.json');
+        /** @var array<string, mixed> $weight */
+        $weight = $fakeRate['weight'];
+        unset($weight['provided']);
+        $fakeRate['weight'] = $weight;
+
+        $rate = $this->executePrivateMethod($rateResponseParser, 'parseRate', [$fakeRate]);
+
+        self::assertInstanceOf(\Sonnenglas\MyDHL\ValueObjects\Rate::class, $rate);
+        self::assertSame(3.6, $rate->getWeightVolumetric());
+        self::assertSame(3.6, $rate->getWeightProvided(), 'Should fall back to volumetric weight when DHL omits "provided".');
+    }
+
     public function testParse(): void
     {
         $expectedProductNames = [
