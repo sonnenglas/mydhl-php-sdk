@@ -62,8 +62,16 @@ final class RateResponseParser
 
         $pricingDate = new DateTimeImmutable(Cast::string($rate['pricingDate']));
 
-        /** @var array{volumetric: mixed, provided: mixed} $weight */
+        /** @var array{volumetric: mixed, provided?: mixed} $weight */
         $weight = $rate['weight'];
+
+        // DHL Express API may omit `weight.provided` for rates priced purely on volumetric weight
+        // (typically light, oversized parcels). Fall back to volumetric so downstream consumers
+        // always have a non-zero, meaningful value.
+        $weightVolumetric = Cast::float($weight['volumetric']);
+        $weightProvided = isset($weight['provided'])
+            ? Cast::float($weight['provided'])
+            : $weightVolumetric;
 
         return new Rate(
             productName: Cast::string($rate['productName']),
@@ -71,8 +79,8 @@ final class RateResponseParser
             localProductCode: Cast::string($rate['localProductCode']),
             localProductCountryCode: Cast::string($rate['localProductCountryCode']),
             isCustomerAgreement: Cast::bool($rate['isCustomerAgreement']),
-            weightVolumetric: Cast::float($weight['volumetric']),
-            weightProvided: Cast::float($weight['provided']),
+            weightVolumetric: $weightVolumetric,
+            weightProvided: $weightProvided,
             totalPrice: $totalPrice,
             currency: $currency,
             estimatedDeliveryDateAndTime: $estimatedDeliveryDateAndTime,
