@@ -328,6 +328,10 @@ Without these env vars the integration suite **auto-skips**, so contributor lapt
 - **From 1.x → 2.0:** see [`UPGRADE-1.x-to-2.0.md`](UPGRADE-1.x-to-2.0.md). Most callers only need to update the `Shipment` response getters that became nullable; international shipments need the new `ExportDeclaration` / `declaredValue` arguments.
 - **From 0.x → 1.0:** the fluent setter API on services was replaced by immutable Request VOs. See the 1.0 release notes.
 
+## Credits
+
+Built and maintained by [Przemek Peron](mailto:przemek@sonnenglas.net).
+
 ## License
 
 [MIT](LICENSE)
