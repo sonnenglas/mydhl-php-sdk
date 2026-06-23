@@ -14,7 +14,7 @@
   "require": {
     "php": "^8.2",
     "ext-json": "*",
-    "guzzlehttp/guzzle": "^7.5",
+    "guzzlehttp/guzzle": "^7.12.1",
     "ramsey/uuid": "^4.7"
   },
   "autoload": {
